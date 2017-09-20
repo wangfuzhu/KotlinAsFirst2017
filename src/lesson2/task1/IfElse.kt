@@ -24,7 +24,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
     val y2 = (-b - Math.sqrt(d)) / (2 * a)
     val y3 = Math.max(y1, y2)       // 5
     if (y3 < 0.0) return Double.NaN // 6
-    return -Math.sqrt(y3)           // 7
+    return -Math.sqrt(y3)                     // 7
 }
 
 /**
@@ -32,8 +32,18 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  *
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
+ * 0<n<4 года
+ * 5<n<20  лет
+ * 21 31 год
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int) {
+    if (age%10 == 1)
+        print("$age год")
+    else if (age < 5)
+        print("$age года")
+    else
+        print("$age лет")
+}
 
 /**
  * Простая
