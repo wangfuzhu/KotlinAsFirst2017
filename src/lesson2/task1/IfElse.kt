@@ -2,6 +2,7 @@
 package lesson2.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 
 /**
  * Пример
@@ -36,13 +37,21 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * 5<n<20  лет
  * 21 31 год
  */
-fun ageDescription(age: Int) {
-    if (age%10 == 1)
-        print("$age год")
-    else if (age < 5)
-        print("$age года")
-    else
-        print("$age лет")
+fun ageDescription(age: Int) : String {
+    if ((1 < age) && (age < 5))
+        return "$age года"
+    if (( age >= 5)&&(age < 200) ){
+        if (age % 100 == 11)
+            return "$age лет"
+        if (age % 10 == 1)
+            return "$age год"
+        if ((age % 10 < 5) && (age % 10 >1))
+            return "$age года"
+        else
+            return "$age лет"
+    }
+    else(age==1)
+        return "$age год"
 }
 
 /**
@@ -54,9 +63,23 @@ fun ageDescription(age: Int) {
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double): Double = TODO()
+                   t3: Double, v3: Double): Double {
+    val time : Double
+    val halfway : Double = (t1*v1+t2*v2+t3*v3)/2.0
+    if (halfway /(v1*t1)<1){
+        time = halfway/v1
+    }
+    else
+        if (halfway/(v1*t1+v2*t2)<1){
+            time = (halfway-v1*t1)/v2+t1
+        }
+        else{
+            time = (halfway-v1*t1-v2*t2)/v3+t1+t2
+        }
+    return time
+}
 
-/**
+/**1
  * Простая
  *
  * Нa шахматной доске стоят черный король и две белые ладьи (ладья бьет по горизонтали и вертикали).
@@ -67,7 +90,16 @@ fun timeForHalfWay(t1: Double, v1: Double,
  */
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
-                       rookX2: Int, rookY2: Int): Int = TODO()
+                       rookX2: Int, rookY2: Int): Int {
+    var attack : Int
+    if ((kingX==rookX1)||(kingY==rookY1)) attack = 1
+    else attack = 0
+    if ((kingX==rookX2)||(kingY==rookY2)) {
+        attack += 2
+    }
+    return attack
+}
+
 
 /**
  * Простая
@@ -81,8 +113,15 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
  */
 fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           rookX: Int, rookY: Int,
-                          bishopX: Int, bishopY: Int): Int = TODO()
-
+                          bishopX: Int, bishopY: Int): Int {
+    var attack : Int
+    if((kingX==rookX)||(kingY==rookY)) attack = 1
+    else attack = 0
+    if ((kingX - bishopX) * (kingX - bishopX) == (kingY - bishopY) * (kingY - bishopY)) {
+        attack +=2
+    }
+    return attack
+}
 /**
  * Простая
  *
@@ -91,7 +130,16 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if ((sqr(a) == sqr(b)+ sqr(c)) || (sqr(c) == sqr(b)+ sqr(a)) || (sqr(b) == sqr(c)+ sqr(a)))
+        return 1
+    if ((a>b+c)||(b>a+c)||(c>a+b))
+        return -1
+    if ((sqr(a) < sqr(b)+ sqr(c)) && (sqr(c) < sqr(b)+ sqr(a)) && (sqr(b) < sqr(c)+ sqr(a)))
+        return 0
+    else return 2
+}
+
 
 /**
  * Средняя
@@ -101,4 +149,23 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    var result:Int = 0
+    if ((c-b>0)||(a-d>0))
+        return -1
+    else {
+        if((c in a..b) && (d > b)){
+            result = b - c
+        }
+        if(( d in a..b ) && (c in a..b)){
+            result = d - c
+        }
+        if(( a in c..d ) && (b > d)) {
+            result = d - a
+        }
+        if(( a in c..d ) && (b in c..d)) {
+            result = b - a
+        }
+    }
+    return result
+}
