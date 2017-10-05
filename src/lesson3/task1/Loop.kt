@@ -161,7 +161,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
     else{
         var result:Int=0
-        for (i in 1..m) {
+        for (i in 1..Math.ceil(Math.sqrt(n.toDouble())).toInt()) {
         if ((i * i >= m) && (i * i <= n)) result+=1
         }
     return (result>0)
@@ -175,9 +175,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double {
-
-}
+fun sin(x: Double, eps: Double): Double = TODO()
 
 /**
  * Средняя
@@ -194,8 +192,22 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Поменять порядок цифр заданного числа n на обратный: 13478 -> 87431.
  * Не использовать строки при решении задачи.
  */
-fun revert(n: Int): Int = TODO()
-
+fun revert(n: Int): Int {
+    if (n==0) return 0
+    else{
+        var x:Int
+        var y = 0
+        var z:Int=n
+        for (i in 1..200){
+            x=z%10
+            y=y*10+x
+            z=z/10
+            if(z<=0.01) break
+            else continue
+        }
+    return y
+    }
+}
 /**
  * Средняя
  *
@@ -203,7 +215,22 @@ fun revert(n: Int): Int = TODO()
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean     {
+    if (n==0) return true
+    else{
+        var x:Int
+        var y = 0
+        var z:Int=n
+        for (i in 1..200){
+            x=z%10
+            y=y*10+x
+            z=z/10
+            if(z<=0.01) break
+            else continue
+        }
+        return(n==y)
+    }
+}
 
 /**
  * Средняя
@@ -211,7 +238,20 @@ fun isPalindrome(n: Int): Boolean = TODO()
  * Для заданного числа n определить, содержит ли оно различающиеся цифры.
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    if (n/10<=0) return false
+    else {
+        var x: Int
+        var y = 100
+        val z = n % 10
+        for (i in 1..9999) {
+            x = n % y
+            y *= 10
+            if ((x != z) && (n / y <= 0)) return true
+        }
+        return false
+    }
+}
 
 /**
  * Сложная
@@ -221,7 +261,6 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int = TODO()
-
 /**
  * Сложная
  *
