@@ -60,18 +60,30 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Тривиальная
  *
  * Найти количество цифр в заданном числе n.
+
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var qiclo:Int=n
-    var number:Int =0
-    for (i in 1..20){
-        number+=1
-        qiclo/=10
-        if (qiclo<1)break
-    else continue
+    if(n<0){
+        var qiclo:Int=-n
+        var number:Int=0
+        for (i in 1..20){
+            number+=1
+            qiclo/=10
+            if (qiclo<1)break
+        }
+        return number
     }
-    return number
+    else{
+        var qiclo:Int=n
+        var number:Int=0
+        for (i in 1..20){
+            number+=1
+            qiclo/=10
+            if (qiclo<1)break
+        }
+        return number
+    }
 }
 
 /**
@@ -175,7 +187,18 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var counter = 1
+    var sin = x % (2 * Math.PI)
+    val sinConst = sin
+    var equation = sin
+    while (Math.abs(equation) >= eps) {
+        equation = -equation * sinConst / ((counter * 2 + 1) * (counter * 2)).toDouble() * sinConst
+        counter += 1
+        sin += equation
+    }
+    return sin
+}
 
 /**
  * Средняя
@@ -184,7 +207,17 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var equation = 1.0
+    var counter = 1
+    var cos = 1.0
+    while (Math.abs(equation) >= eps) {
+        equation = -equation * (x % (2 * Math.PI)) / ((counter * 2 - 1) * (counter * 2)).toDouble() * (x % (2 * Math.PI))
+        counter += 1
+        cos += equation
+    }
+    return cos
+}
 
 /**
  * Средняя
@@ -270,7 +303,20 @@ fun hasDifferentDigits(n: Int): Boolean {
  * 149162536496481100121144...
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var numbers = 1
+    var str = ""
+    var nn = n
+    while (nn > 0) {
+        val sqrnumb = numbers * numbers
+        str = "$sqrnumb"
+        numbers++
+        nn -= str.length
+    }
+    numbers = str.length - 1 + nn
+    return str[numbers].toString().toInt()
+}
+
 /**
  * Сложная
  *
@@ -278,4 +324,19 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var numbers = 1
+    var str = ""
+    var nn = n
+    var fibnumb: Int
+    while (nn > 0) {
+        fibnumb = fib(numbers)
+        str = "$fibnumb"
+        numbers++
+        nn -= str.length
+    }
+    numbers = str.length - 1 + nn
+    return str[numbers].toString().toInt()
+}
+
+
