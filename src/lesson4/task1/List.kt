@@ -348,69 +348,67 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var answer=""
-    var copy=n
-    if (n==0) answer="ноль"
-    if (n>=100000){
+    var answer = ""
+    var copy = n
+    if (n == 0) answer = "ноль"
+    if (n >= 100000) {
         when {
-            copy/100000==1 -> answer+="сто"
-            copy/100000==2 -> answer+="двести"
-            copy/100000==3 -> answer+="триста"
-            copy/100000==4 -> answer+="четыреста"
-            copy/100000==5 -> answer+="пятьсот"
-            copy/100000==6 -> answer+="шестьсот"
-            copy/100000==7 -> answer+="семьсот"
-            copy/100000==8 -> answer+="восемьсот"
-            copy/100000==9 -> answer+="девятьсот"
+            copy / 100000 == 1 -> answer += "сто"
+            copy / 100000 == 2 -> answer += "двести"
+            copy / 100000 == 3 -> answer += "триста"
+            copy / 100000 == 4 -> answer += "четыреста"
+            copy / 100000 == 5 -> answer += "пятьсот"
+            copy / 100000 == 6 -> answer += "шестьсот"
+            copy / 100000 == 7 -> answer += "семьсот"
+            copy / 100000 == 8 -> answer += "восемьсот"
+            copy / 100000 == 9 -> answer += "девятьсот"
         }
-        copy%=100000
-        if (copy<1000) answer+=" тысяч"
+        copy %= 100000
+        if (copy < 1000) answer += " тысяч"
     }
-    if (copy>=10000){
-        if (copy/10000==1) {
+    if (copy >= 10000) {
+        if (copy / 10000 == 1) {
             when {
-                (copy%10000)/1000==0 -> answer+=" десять тысяч"
-                (copy%10000)/1000==1 -> answer+=" одиннадцать тысяч"
-                (copy%10000)/1000==2 -> answer+=" двенадцать тысяч"
-                (copy%10000)/1000==3 -> answer+=" тринадцать тысяч"
-                (copy%10000)/1000==4 -> answer+=" четырнадцать тысяч"
-                (copy%10000)/1000==5 -> answer+=" пятнадцать тысяч"
-                (copy%10000)/1000==6 -> answer+=" шестнадцать тысяч"
-                (copy%10000)/1000==7 -> answer+=" семнадцать тысяч"
-                (copy%10000)/1000==8 -> answer+=" восемнадцать тысяч"
-                (copy%10000)/1000==9 -> answer+=" девятнадцать тысяч"
+                (copy % 10000) / 1000 == 0 -> answer += " десять тысяч"
+                (copy % 10000) / 1000 == 1 -> answer += " одиннадцать тысяч"
+                (copy % 10000) / 1000 == 2 -> answer += " двенадцать тысяч"
+                (copy % 10000) / 1000 == 3 -> answer += " тринадцать тысяч"
+                (copy % 10000) / 1000 == 4 -> answer += " четырнадцать тысяч"
+                (copy % 10000) / 1000 == 5 -> answer += " пятнадцать тысяч"
+                (copy % 10000) / 1000 == 6 -> answer += " шестнадцать тысяч"
+                (copy % 10000) / 1000 == 7 -> answer += " семнадцать тысяч"
+                (copy % 10000) / 1000 == 8 -> answer += " восемнадцать тысяч"
+                (copy % 10000) / 1000 == 9 -> answer += " девятнадцать тысяч"
             }
+        } else when {
+            copy / 10000 == 2 -> answer += " двадцать"
+            copy / 10000 == 3 -> answer += " тридцать"
+            copy / 10000 == 4 -> answer += " сорок"
+            copy / 10000 == 5 -> answer += " пятьдесят"
+            copy / 10000 == 6 -> answer += " шестьдесят"
+            copy / 10000 == 7 -> answer += " семьдесят"
+            copy / 10000 == 8 -> answer += " восемьдесят"
+            copy / 10000 == 9 -> answer += " девяносто"
         }
-        else when {
-            copy/10000==2 -> answer+=" двадцать"
-            copy/10000==3 -> answer+=" тридцать"
-            copy/10000==4 -> answer+=" сорок"
-            copy/10000==5 -> answer+=" пятьдесят"
-            copy/10000==6 -> answer+=" шестьдесят"
-            copy/10000==7 -> answer+=" семьдесят"
-            copy/10000==8 -> answer+=" восемьдесят"
-            copy/10000==9 -> answer+=" девяносто"
-        }
-        copy%=10000
-        if((copy<1000)&&(n%100000>11000)) answer+=" тысяч"
+        copy %= 10000
+        if ((copy < 1000) && (n % 100000 > 11000)) answer += " тысяч"
     }
-    if((copy>=1000)&&(copy<10000)){
-        when{
-            copy/1000==1 -> answer+=" одна тысяча"
-            copy/1000==2 -> answer+=" две тысячи"
-            copy/1000==3 -> answer+=" три тысячи"
-            copy/1000==4 -> answer+=" четыре тысячи"
-            copy/1000==5 -> answer+=" пять тысяч"
-            copy/1000==6 -> answer+=" шесть тысяч"
-            copy/1000==7 -> answer+=" семь тысяч"
-            copy/1000==8 -> answer+=" восемь тысяч"
-            copy/1000==9 -> answer+=" девять тысяч"
+    if ((copy >= 1000) && (copy < 10000)) {
+        when {
+            copy / 1000 == 1 -> answer += " одна тысяча"
+            copy / 1000 == 2 -> answer += " две тысячи"
+            copy / 1000 == 3 -> answer += " три тысячи"
+            copy / 1000 == 4 -> answer += " четыре тысячи"
+            copy / 1000 == 5 -> answer += " пять тысяч"
+            copy / 1000 == 6 -> answer += " шесть тысяч"
+            copy / 1000 == 7 -> answer += " семь тысяч"
+            copy / 1000 == 8 -> answer += " восемь тысяч"
+            copy / 1000 == 9 -> answer += " девять тысяч"
 
         }
-        copy%=1000
-    }
-    else copy%=1000
-    if(copy>=100){
+        copy %= 1000
+    } else copy %= 1000
+    if (copy >= 100) {
         if (copy / 100 == 1) answer += " сто"
         if (copy / 100 == 2) answer += " двести"
         if (copy / 100 == 3) answer += " триста"
@@ -420,9 +418,9 @@ fun russian(n: Int): String {
         if (copy / 100 == 7) answer += " семьсот"
         if (copy / 100 == 8) answer += " восемьсот"
         if (copy / 100 == 9) answer += " девятьсот"
-        copy%=100
+        copy %= 100
     }
-    if(copy>=10){
+    if (copy >= 10) {
         if (copy / 10 == 1) {
             if ((copy % 10) == 0) answer += " десять"
             if ((copy % 10) == 1) answer += " одиннадцать"
@@ -445,7 +443,7 @@ fun russian(n: Int): String {
         if (copy / 10 == 9) answer += " девяносто"
         copy %= 10
     }
-    if (copy>=1){
+    if (copy >= 1) {
         if (copy == 1) answer += " один"
         if (copy == 2) answer += " два"
         if (copy == 3) answer += " три"
@@ -456,8 +454,8 @@ fun russian(n: Int): String {
         if (copy == 8) answer += " восемь"
         if (copy == 9) answer += " девять"
     }
-    answer.trimMargin( )
+    answer.trimMargin()
     return answer
-
+}
 
 
