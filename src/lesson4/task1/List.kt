@@ -382,7 +382,7 @@ fun russian(n: Int): String {
             else break
         }
         str = str +" тысячи"
-        for (i in 36 downTo 0) {
+        for (i in 36 downTo 1) {
             if (copy >= number[i]) {
                 str += numru[i]
                 copy -= number[i]
@@ -391,7 +391,7 @@ fun russian(n: Int): String {
         }
     }
     else {
-        for (i in 36 downTo 0) {
+        for (i in 36 downTo 1) {
             if (copy >= number[i]) {
                 str += numru[i]
                 copy -= number[i]
