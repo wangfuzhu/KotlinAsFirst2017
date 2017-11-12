@@ -2,6 +2,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson3.task1.maxDivisor
 
 /**
  * Пример
@@ -136,8 +137,8 @@ fun center(list: MutableList<Double>): MutableList<Double> =
             list.isEmpty()->list
             else->{
                 val const=list.sum() / list.size
-                for (elCount in 0 until list.size) {
-                    list[elCount] -= const
+                for (i in 0 until list.size) {
+                    list[i] -= const
                 }
                 list
             }
@@ -173,10 +174,10 @@ fun polynom(p: List<Double>, x: Double): Double =
         when {
             p.isEmpty() -> 0.0
             else -> {
-                var pX = 0.0
-                for (elCount in 0 until p.size)
-                    pX += p[elCount] * Math.pow(x, elCount.toDouble())
-                pX
+                var px = 0.0
+                for (elcount in 0 until p.size)
+                    px += p[elcount] * Math.pow(x, elcount.toDouble())
+                px
             }
         }
 
@@ -216,16 +217,16 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> =
  * Множители в списке должны располагаться по возрастанию.
  */
 fun factorize(n: Int): List<Int> {
-    var divisor=2
-    var copy=n
-    val list = mutableListOf<Int>()
+    var copy = n
+    var divosor = 2
+    var list = mutableListOf<Int>()
     for (i in 1..n){
-        if (copy>1) {
-            if (copy%divisor==0){
-                copy/=divisor
-                list.add(divisor)
-            }else
-                divisor++
+        if (copy > 1) {
+            if (copy % divosor == 0) {
+                copy /= divosor
+                list.add(divosor)
+            } else
+                divosor += 1
         }
         else break
     }
@@ -249,13 +250,21 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  */
 fun convert(n: Int, base: Int): List<Int> {
     if (n<base) return listOf(n)
-    var copyn=n
-    val answer= mutableListOf<Int>()
+    var copyn = n
+    val answer = mutableListOf<Int>()
+    val answer2 = mutableListOf<Int>()
+    var elcount:Int
     while(copyn>0){
         answer.add(copyn%base)
         copyn/=base
     }
-    return answer.reversed()
+    for (i in 0..answer.size) {
+        if (answer.size - 1 - i >= 0) {
+            elcount = answer[answer.size - 1 - i]
+            answer2.add(elcount)
+        } else break
+    }
+    return answer2
 }
 
 /**
@@ -287,7 +296,15 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     var answer=0
-    val list=digits.reversed()
+    val list= mutableListOf<Int>()
+    var number:Int
+    for (i in 0..digits.size){
+        if (digits.size - 1 - i >= 0){
+            number =digits[digits.size- 1-i]
+            list.add(number)
+        }
+        else break
+    }
     var n=1
     for (i in 0 until digits.size){
         answer +=list[i]*n
@@ -324,20 +341,20 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var list = ""
-    val abc = listOf<String>("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M").reversed()
-    val number = listOf<Int>(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000).reversed()
+    var str = ""
+    val abc = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    val number = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var copy = n
-    var i = 0
-    while (number[i] > n) i += 1
-        while (copy > 0) {
-            while (copy - number[i] >= 0) {
-                list += abc[i]
-                copy -= number[i]
-            }
-            i+=1
-        }
-    return list
+    var i =0
+    while (number[i]>n) i+=1
+    while (copy > 0){
+       while (copy >= number[i]){
+           str +=abc[i]
+           copy -= number[i]
+       }
+        i+=1
+    }
+    return str
 }
 
 /**
@@ -348,114 +365,39 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var answer=""
-    var copy=n
-    if (n==0) answer="ноль"
-    if (n>=100000){
-        when {
-            copy/100000==1 -> answer+="сто"
-            copy/100000==2 -> answer+="двести"
-            copy/100000==3 -> answer+="триста"
-            copy/100000==4 -> answer+="четыреста"
-            copy/100000==5 -> answer+="пятьсот"
-            copy/100000==6 -> answer+="шестьсот"
-            copy/100000==7 -> answer+="семьсот"
-            copy/100000==8 -> answer+="восемьсот"
-            copy/100000==9 -> answer+="девятьсот"
-        }
-        copy%=100000
-        if (copy<1000) answer+=" тысяч"
-    }
-    if (copy>=10000){
-        if (copy/10000==1) {
-            when {
-                (copy%10000)/1000==0 -> answer+=" десять тысяч"
-                (copy%10000)/1000==1 -> answer+=" одиннадцать тысяч"
-                (copy%10000)/1000==2 -> answer+=" двенадцать тысяч"
-                (copy%10000)/1000==3 -> answer+=" тринадцать тысяч"
-                (copy%10000)/1000==4 -> answer+=" четырнадцать тысяч"
-                (copy%10000)/1000==5 -> answer+=" пятнадцать тысяч"
-                (copy%10000)/1000==6 -> answer+=" шестнадцать тысяч"
-                (copy%10000)/1000==7 -> answer+=" семнадцать тысяч"
-                (copy%10000)/1000==8 -> answer+=" восемнадцать тысяч"
-                (copy%10000)/1000==9 -> answer+=" девятнадцать тысяч"
-            }
-        }
-        else when {
-            copy/10000==2 -> answer+=" двадцать"
-            copy/10000==3 -> answer+=" тридцать"
-            copy/10000==4 -> answer+=" сорок"
-            copy/10000==5 -> answer+=" пятьдесят"
-            copy/10000==6 -> answer+=" шестьдесят"
-            copy/10000==7 -> answer+=" семьдесят"
-            copy/10000==8 -> answer+=" восемьдесят"
-            copy/10000==9 -> answer+=" девяносто"
-        }
-        copy%=10000
-        if((copy<1000)&&(n%100000>11000)) answer+=" тысяч"
-    }
-    if((copy>=1000)&&(copy<10000)){
-        when{
-            copy/1000==1 -> answer+=" одна тысяча"
-            copy/1000==2 -> answer+=" две тысячи"
-            copy/1000==3 -> answer+=" три тысячи"
-            copy/1000==4 -> answer+=" четыре тысячи"
-            copy/1000==5 -> answer+=" пять тысяч"
-            copy/1000==6 -> answer+=" шесть тысяч"
-            copy/1000==7 -> answer+=" семь тысяч"
-            copy/1000==8 -> answer+=" восемь тысяч"
-            copy/1000==9 -> answer+=" девять тысяч"
-
-        }
+    var str = ""
+    val number = listOf<Int>(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900)
+    val numru = listOf<String>("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять" , "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"  , "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    var copy = n
+    var copy1 = n
+    if (n == 0) return "ноль"
+    if (copy/1000>=1){
         copy%=1000
-    }
-    else copy%=1000
-    if(copy>=100){
-        if (copy / 100 == 1) answer += " сто"
-        if (copy / 100 == 2) answer += " двести"
-        if (copy / 100 == 3) answer += " триста"
-        if (copy / 100 == 4) answer += " четыреста"
-        if (copy / 100 == 5) answer += " пятьсот"
-        if (copy / 100 == 6) answer += " шестьсот"
-        if (copy / 100 == 7) answer += " семьсот"
-        if (copy / 100 == 8) answer += " восемьсот"
-        if (copy / 100 == 9) answer += " девятьсот"
-        copy%=100
-    }
-    if(copy>=10){
-        if (copy / 10 == 1) {
-            if ((copy % 10) == 0) answer += " десять"
-            if ((copy % 10) == 1) answer += " одиннадцать"
-            if ((copy % 10) == 2) answer += " двенадцать"
-            if ((copy % 10) == 3) answer += " тринадцать"
-            if ((copy % 10) == 4) answer += " четырнадцать"
-            if ((copy % 10) == 5) answer += " пятнадцать"
-            if ((copy % 10) == 6) answer += " шестнадцать"
-            if ((copy % 10) == 7) answer += " семнадцать"
-            if ((copy % 10) == 8) answer += " восемнадцать"
-            if ((copy % 10) == 9) answer += " девятнадцать"
+        copy1/=1000
+        for(x in 36 downTo 0){
+            if (copy >= number[x]) {
+                str += numru[x]
+                copy -= number[x]
+            }
+            else break
         }
-        if (copy / 10 == 2) answer += " двадцать"
-        if (copy / 10 == 3) answer += " тридцать"
-        if (copy / 10 == 4) answer += " сорок"
-        if (copy / 10 == 5) answer += " пятьдесят"
-        if (copy / 10 == 6) answer += " шестьдесят"
-        if (copy / 10 == 7) answer += " семьдесят"
-        if (copy / 10 == 8) answer += " восемьдесят"
-        if (copy / 10 == 9) answer += " девяносто"
-        copy %= 10
+        str = str +" тысячи"
+        for (i in 36 downTo 0) {
+            if (copy >= number[i]) {
+                str += numru[i]
+                copy -= number[i]
+            }
+            else break
+        }
     }
-    if (copy>=1){
-        if (copy == 1) answer += " один"
-        if (copy == 2) answer += " два"
-        if (copy == 3) answer += " три"
-        if (copy == 4) answer += " четыре"
-        if (copy == 5) answer += " пять"
-        if (copy == 6) answer += " шесть"
-        if (copy == 7) answer += " семь"
-        if (copy == 8) answer += " восемь"
-        if (copy == 9) answer += " девять"
+    else {
+        for (i in 36 downTo 0) {
+            if (copy >= number[i]) {
+                str += numru[i]
+                copy -= number[i]
+                }
+            else break
+        }
     }
-    answer.trimMargin( )
-    return answer
+    return str
 }
