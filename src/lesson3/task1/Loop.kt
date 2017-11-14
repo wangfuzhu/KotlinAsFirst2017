@@ -64,23 +64,27 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    if(n<0){
+    if(n<0) {
         var qiclo:Int=-n
         var number:Int=0
-        for (i in 1..20){
+        for (i in 1..20) {
             number+=1
             qiclo/=10
-            if (qiclo<1)break
+            if (qiclo<1) {
+                break
+            }
         }
         return number
     }
-    else{
+    else {
         var qiclo:Int=n
         var number:Int=0
-        for (i in 1..20){
+        for (i in 1..20) {
             number+=1
             qiclo/=10
-            if (qiclo<1)break
+            if (qiclo<1) {
+                break
+            }
         }
         return number
     }
@@ -174,7 +178,9 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
     else{
         var result:Int=0
         for (i in 1..Math.ceil(Math.sqrt(n.toDouble())).toInt()) {
-        if ((i * i >= m) && (i * i <= n)) result+=1
+            if ((i * i >= m) && (i * i <= n)) {
+                result+=1
+            }
         }
     return (result>0)
     }

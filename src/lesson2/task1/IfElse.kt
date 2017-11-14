@@ -37,22 +37,22 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * 5<n<20  лет
  * 21 31 год
  */
-fun ageDescription(age: Int) : String {
-    if ((1 < age) && (age < 5))
-        return "$age года"
-    if (( age >= 5)&&(age < 200) ){
-        if ((age % 100 == 11)||(age % 100 == 12)||(age % 100 == 13)||(age % 100 == 14))
-            return "$age лет"
-        if (age % 10 == 1)
-            return "$age год"
-        if ((age % 10 < 5) && (age % 10 >1))
-            return "$age года"
-        else
-            return "$age лет"
+fun ageDescription(age: Int) : String =
+    when {
+        (1 < age) && (age < 5) -> "$age года"
+        (age >= 5) && (age < 200) -> when {
+            (age % 100 == 11) || (age % 100 == 12) || (age % 100 == 13) || (age % 100 == 14)
+            -> "$age лет"
+            (age % 10 == 1)
+            -> "$age год"
+            (age % 10 < 5) && (age % 10 > 1)
+            -> "$age года"
+            else
+            -> "$age лет"
+        }
+        (age == 1) -> "$age год"
+        else -> ""
     }
-    else(age==1)
-        return "$age год"
-}
 
 /**
  * Простая
@@ -66,16 +66,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
                    t3: Double, v3: Double): Double {
     val time : Double
     val halfway : Double = (t1*v1+t2*v2+t3*v3)/2.0
-    if (halfway /(v1*t1)<1){
-        time = halfway/v1
+    when {
+        (halfway / (v1 * t1) < 1) -> time = halfway / v1
+        (halfway / (v1 * t1 + v2 * t2) < 1) -> time = (halfway - v1 * t1) / v2 + t1
+        else -> time = (halfway - v1 * t1 - v2 * t2) / v3 + t1 + t2
     }
-    else
-        if (halfway/(v1*t1+v2*t2)<1){
-            time = (halfway-v1*t1)/v2+t1
-        }
-        else{
-            time = (halfway-v1*t1-v2*t2)/v3+t1+t2
-        }
     return time
 }
 
@@ -130,15 +125,16 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if ((sqr(a) == sqr(b)+ sqr(c)) || (sqr(c) == sqr(b)+ sqr(a)) || (sqr(b) == sqr(c)+ sqr(a)))
-        return 1
-    if ((a>b+c)||(b>a+c)||(c>a+b))
-        return -1
-    if ((sqr(a) < sqr(b)+ sqr(c)) && (sqr(c) < sqr(b)+ sqr(a)) && (sqr(b) < sqr(c)+ sqr(a)))
-        return 0
-    else return 2
-}
+fun triangleKind(a: Double, b: Double, c: Double): Int =
+    when {
+        ((sqr(a) == sqr(b) + sqr(c)) || (sqr(c) == sqr(b) + sqr(a)) || (sqr(b) == sqr(c) + sqr(a)))
+        -> 1
+        ((a > b + c) || (b > a + c) || (c > a + b))
+        -> -1
+        ((sqr(a) < sqr(b) + sqr(c)) && (sqr(c) < sqr(b) + sqr(a)) && (sqr(b) < sqr(c) + sqr(a)))
+        -> 0
+        else -> 2
+    }
 
 
 /**
