@@ -41,7 +41,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean {
  */
 fun circleInside(x1: Double, y1: Double, r1: Double,
                  x2: Double, y2: Double, r2: Double): Boolean {
-    return ( Math.sqrt ( sqr (x2 - x1) + sqr (y2 - y1)) + r1 <= r2)
+    return (Math.sqrt (sqr(x2 - x1) + sqr(y2 - y1)) + r1 <= r2)
 }
 
 /**
@@ -55,9 +55,9 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     return ( (a <= r) && (b <= s) )
-            || ( (a <= s) && (b <= r) )
-            || ( (a <= r) && (c <= s) )
-            || ( (a <= s) && (c <= r) )
-            || ( (b <= s) && (c <= r) )
-            || ( (b <= r) && (c <= s) )
+            || ((a <= s) && (b <= r))
+            || ((a <= r) && (c <= s))
+            || ((a <= s) && (c <= r))
+            || ((b <= s) && (c <= r))
+            || ((b <= r) && (c <= s))
 }

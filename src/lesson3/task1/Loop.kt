@@ -261,7 +261,7 @@ fun isPalindrome(n: Int): Boolean {
 fun hasDifferentDigits(n: Int): Boolean {
     var x = n
     var y = 1
-    var z = 0
+    var z :Int
     var w = 0
     while (x >= 10) {
         x /= 10; w += 1; y *= 10

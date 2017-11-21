@@ -62,7 +62,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
     else if (halfway / (v1 * t1 + v2 * t2) < 1) {
         time = (halfway - v1 * t1) / v2 + t1
     }
-        else {time = (halfway - v1 * t1 - v2 * t2) / v3 + t1 + t2
+    else {time = (halfway - v1 * t1 - v2 * t2) / v3 + t1 + t2
     }
     return time
 }
