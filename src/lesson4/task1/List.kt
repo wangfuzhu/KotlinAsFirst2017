@@ -120,8 +120,8 @@ fun abs(v: List<Double>): Double =
  */
 fun mean(list: List<Double>): Double =
         when {
-            list.isEmpty()->0.0
-            else-> list.sum()/list.size
+            list.isEmpty() -> 0.0
+            else-> list.sum() / list.size
         }
 
 /**
@@ -134,7 +134,7 @@ fun mean(list: List<Double>): Double =
  */
 fun center(list: MutableList<Double>): MutableList<Double> =
         when {
-            list.isEmpty()->list
+            list.isEmpty() -> list
             else->{
                 val const=list.sum() / list.size
                 for (i in 0 until list.size) {
@@ -281,7 +281,7 @@ fun convertToString(n: Int, base: Int): String {
     var answer =""
     for (i in 0 until list.size)
         if (list[i]> 9)
-            answer +=abc[list[i]-10]
+            answer += abc[list[i]-10]
     else answer += list[i]
     return answer
 }
@@ -307,8 +307,8 @@ fun decimal(digits: List<Int>, base: Int): Int {
     }
     var n=1
     for (i in 0 until digits.size){
-        answer +=list[i]*n
-        n*=base
+        answer += list[i]*n
+        n *= base
     }
     return answer
 }
@@ -322,9 +322,9 @@ fun decimal(digits: List<Int>, base: Int): Int {
  * Например: str = "13c", base = 14 -> 250
  */
 fun decimalFromString(str: String, base: Int): Int {
-    val list= mutableListOf<Int>()
-    val number="0123456789"
-    val abc="abcdefghijklmnopqrstuvwxyz"
+    val list = mutableListOf<Int>()
+    val number = "0123456789"
+    val abc = "abcdefghijklmnopqrstuvwxyz"
     for(i in 0 until str.length )
         if (str[i] in number)
             list.add(number.indexOf(str[i],0))
@@ -349,7 +349,7 @@ fun roman(n: Int): String {
     while (number[i]>n) i+=1
     while (copy > 0){
        while (copy >= number[i]){
-           str +=abc[i]
+           str += abc[i]
            copy -= number[i]
        }
         i+=1
