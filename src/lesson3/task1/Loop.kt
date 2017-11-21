@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson3.task1
 
 import lesson1.task1.sqr
@@ -36,7 +37,7 @@ fun isPrime(n: Int): Boolean {
  */
 fun isPerfect(n: Int): Boolean {
     var sum = 1
-    for (m in 2..n/2) {
+    for (m in 2..n / 2) {
         if (n % m > 0) continue
         sum += m
         if (sum > n) break
@@ -64,30 +65,19 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    if(n<0) {
-        var qiclo:Int=-n
-        var number:Int=0
-        for (i in 1..20) {
-            number+=1
-            qiclo/=10
-            if (qiclo<1) {
-                break
-            }
+    var qiclo: Int = n
+    if (n < 0)
+        qiclo = -n
+    var number: Int = 0
+    for (i in 1..9999) {
+        number += 1
+        qiclo /= 10
+        if (qiclo < 1) {
+            break
         }
-        return number
     }
-    else {
-        var qiclo:Int=n
-        var number:Int=0
-        for (i in 1..20) {
-            number+=1
-            qiclo/=10
-            if (qiclo<1) {
-                break
-            }
-        }
-        return number
-    }
+    return number
+
 }
 
 /**
@@ -97,11 +87,10 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    if (n<=2){
+    if (n <= 2) {
         return 1
-    }
-    else {
-        return fib(n-2)+ fib(n-1)
+    } else {
+        return fib(n - 2) + fib(n - 1)
     }
 
 }
@@ -113,22 +102,23 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var minm:Int=1
-    for (i in 2..m*n){
-        minm+=1
-        if ((i%m==0)&&(i%n==0)) break
+    var minm: Int = 1
+    for (i in 2..m * n) {
+        minm += 1
+        if ((i % m == 0) && (i % n == 0)) break
         else continue
     }
     return minm
 }
+
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var min:Int=1
-    for(i in 2..n) {
+    var min: Int = 1
+    for (i in 2..n) {
         min += 1
         if (n % i == 0) break
         else continue
@@ -142,10 +132,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var max:Int=n
-    for (i in 1..n){
-        max-=1
-        if (n%max==0) break
+    var max: Int = n
+    for (i in 1..n) {
+        max -= 1
+        if (n % max == 0) break
         else continue
     }
     return max
@@ -159,11 +149,11 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var result:Int=0
+    var result: Int = 0
     for (i in 2..n) {
-        if ((n % i == 0) && (m % i == 0))  result+=1
+        if ((n % i == 0) && (m % i == 0)) result += 1
     }
-    return (result==0)
+    return (result == 0)
 }
 
 /**
@@ -175,14 +165,14 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
-    else{
-        var result:Int=0
+    else {
+        var result: Int = 0
         for (i in 1..Math.ceil(Math.sqrt(n.toDouble())).toInt()) {
             if ((i * i >= m) && (i * i <= n)) {
-                result+=1
+                result += 1
             }
         }
-    return (result>0)
+        return (result > 0)
     }
 }
 
@@ -232,21 +222,22 @@ fun cos(x: Double, eps: Double): Double {
  * Не использовать строки при решении задачи.
  */
 fun revert(n: Int): Int {
-    if (n==0) return 0
-    else{
-        var x:Int
+    if (n == 0) return 0
+    else {
+        var x: Int
         var y = 0
-        var z:Int=n
-        for (i in 1..200){
-            x=z%10
-            y=y*10+x
-            z=z/10
-            if(z<=0.01) break
+        var z: Int = n
+        for (i in 1..200) {
+            x = z % 10
+            y = y * 10 + x
+            z = z / 10
+            if (z <= 0.01) break
             else continue
         }
-    return y
+        return y
     }
 }
+
 /**
  * Средняя
  *
@@ -254,20 +245,10 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean     {
-    if (n==0) return true
-    else{
-        var x:Int
-        var y = 0
-        var z:Int=n
-        for (i in 1..200){
-            x=z%10
-            y=y*10+x
-            z=z/10
-            if(z<=0.01) break
-            else continue
-        }
-        return(n==y)
+fun isPalindrome(n: Int): Boolean {
+    if (n == 0) return true
+    else {
+        return n == revert(n)
     }
 }
 
@@ -312,14 +293,14 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var numbers = 1
     var str = ""
-    var nn = n
-    while (nn > 0) {
+    var Nn = n
+    while (Nn > 0) {
         val sqrnumb = numbers * numbers
         str = "$sqrnumb"
         numbers++
-        nn -= str.length
+        Nn -= str.length
     }
-    numbers = str.length - 1 + nn
+    numbers = str.length - 1 + Nn
     return str[numbers].toString().toInt()
 }
 
@@ -333,15 +314,15 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var numbers = 1
     var str = ""
-    var nn = n
+    var Nn = n
     var fibnumb: Int
-    while (nn > 0) {
+    while (Nn > 0) {
         fibnumb = fib(numbers)
         str = "$fibnumb"
         numbers++
-        nn -= str.length
+        Nn -= str.length
     }
-    numbers = str.length - 1 + nn
+    numbers = str.length - 1 + Nn
     return str[numbers].toString().toInt()
 }
 

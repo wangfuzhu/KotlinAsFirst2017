@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson5.task1
 
+import lesson7.task2.generateSnake
 import java.math.RoundingMode
 
 /**
@@ -327,23 +328,40 @@ fun mostExpensive(description: String): String {
     var answer = 0
     val Romeabc = "IVXLCDM"
     var abc =0
-    for (i in 1..roman.length){
-        for (x in 1..Romeabc.length) {
-            if (roman[i - 1] == roman[x - 1]) abc += 1
+    for (i in 0 until roman.length){
+        for (x in 0 until Romeabc.length) {
+            if (roman[i] == Romeabc[x]) {
+                abc += 1
+            }
         }
         if (abc==0) return -1
     }
-    for (i in 0 until roman.length){
+    for (i in 0 until  roman.length){
         when (roman[i]){
             Romeabc[6] -> answer += 1000
             Romeabc[5] -> answer += 500
-            Romeabc[4] -> answer += 100
-            Romeabc[3] -> answer += 50
-            Romeabc[2] -> answer += 10
-            Romeabc[1] -> answer += 5
-            Romeabc[0] -> answer += 1
+            Romeabc[4] ->
+                if (i == roman.length - 1) answer += 100
+                else if((roman[i+1] == Romeabc[6]) || (roman[i+1] == Romeabc[5])){
+                    answer -= 100
+                }
+                else answer += 100
+            Romeabc[3] ->  answer += 50
+            Romeabc[2] ->
+                if (i == roman.length - 1) answer += 10
+                else if ((roman[i+1] == Romeabc[3]) || (roman[i+1] == Romeabc[4])){
+                    answer -= 10
+                }
+                else answer += 10
+            Romeabc[1] -> answer +=5
+            Romeabc[0] ->
+                if (i == roman.length - 1) answer += 1
+                else if ((roman[i+1] == Romeabc[2]) || (roman[i+1] == Romeabc[1])){
+                        answer -= 1
+                }
+                else answer += 1
+            }
         }
-    }
     return answer
 }
 

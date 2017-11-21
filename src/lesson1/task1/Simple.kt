@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson1.task1
-
+import  java.lang.Math.*
 
 /**
  * Пример
@@ -72,7 +72,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
-        (grad + min / 60.0 + sec / 3600.0 ) * Math.PI/180
+        (grad + min / 60.0 + sec / 3600.0) * PI/180
 
 /**
  * Тривиальная
@@ -81,7 +81,7 @@ fun angleInRadian(grad: Int, min: Int, sec: Int): Double =
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double =
-        Math.sqrt ( (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) )
+        Math.sqrt ( sqr(x2-x1) + sqr (y2-y1) )
 /**
  * Простая
  *
