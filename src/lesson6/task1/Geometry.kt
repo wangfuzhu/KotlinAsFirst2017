@@ -2,6 +2,7 @@
 package lesson6.task1
 
 import lesson1.task1.sqr
+import lesson2.task2.pointInsideCircle
 
 /**
  * Точка на плоскости
@@ -107,15 +108,30 @@ data class Segment(val begin: Point, val end: Point) {
  * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
  * Если в множестве менее двух точек, бросить IllegalArgumentException
  */
-fun diameter(vararg points: Point): Segment = TODO()
-
+fun Segment.length() = begin.distance(end)
+fun Segment.center() = Point((begin.x + end.x) / 2,(begin.y + end.y) / 2)
+fun diameter(vararg points: Point): Segment {
+    if (points.isEmpty()||(points.size < 2)) throw IllegalArgumentException()
+    else if (points.size == 2) return Segment(points[0],points[1])
+    else{
+        var longest = Segment(points[0],points[0])
+        for (first in points){
+            for (second in points){
+                if (first.distance(second) > longest.length()){
+                    longest = Segment(first,second)
+                }
+            }
+        }
+        return longest
+    }
+}
 /**
  * Простая
  *
  * Построить окружность по её диаметру, заданному двумя точками
  * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
  */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
+fun circleByDiameter(diameter: Segment): Circle  = Circle(diameter.center(),diameter.length() / 2)
 
 /**
  * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
@@ -137,7 +153,6 @@ class Line private constructor(val b: Double, val angle: Double) {
      * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
      */
     fun crossPoint(other: Line): Point = TODO()
-
     override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
     override fun hashCode(): Int {
@@ -154,21 +169,21 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = TODO()
+fun lineBySegment(s: Segment): Line = Line(s.begin,Math.atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))
 
 /**
  * Средняя
  *
  * Построить прямую по двум точкам
  */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a,b))
 
 /**
  * Сложная
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+fun bisectorByPoints(a: Point, b: Point): Line {}
 
 /**
  * Средняя
