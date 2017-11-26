@@ -183,7 +183,7 @@ fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a,b))
  *
  * Построить серединный перпендикуляр по отрезку или по двум точкам
  */
-fun bisectorByPoints(a: Point, b: Point): Line {}
+fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x)/ 2,(a.y + b.y)/ 2),Math.atan((b.y - a.y) / (b.x - a.x)) + Math.PI / 2)
 
 /**
  * Средняя
@@ -191,8 +191,26 @@ fun bisectorByPoints(a: Point, b: Point): Line {}
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
  * Если в списке менее двух окружностей, бросить IllegalArgumentException
  */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
-
+fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
+    var first = circles[0]
+    var second = circles[1]
+    var min = circles[0].center.distance(circles[1].center)- circles[0].radius - circles[1].radius
+    if (circles.isEmpty() || circles.size < 2) throw IllegalArgumentException()
+    else if (circles.size == 2) return Pair(first,second)
+    else {
+        for (i in 0 until circles.size){
+            for (j in (i + 1) until circles.size){
+                val min2 = circles[i].distance(circles[j])
+                if (min > min2) {
+                    min = min2
+                    first = circles [i]
+                    second = circles [j]
+                }
+            }
+        }
+        return Pair(first, second)
+    }
+}
 /**
  * Сложная
  *
@@ -202,7 +220,21 @@ fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
  * (построить окружность по трём точкам, или
  * построить окружность, описанную вокруг треугольника - эквивалентная задача).
  */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+    val differenceXAB = a.x - b.x
+    val dxAC = a.x - c.x
+    val dYAB = a.y - b.y
+    val dYAC = a.y - c.y
+    val e = (sqr(a.x) - sqr(b.x)) - (sqr(b.y) - sqr(a.y)) / 2
+    val f = (sqr(a.x) - sqr(c.x)) - (sqr(c.y) - sqr(a.y)) / 2
+    val xCircle = -(dYAC * e - dYAB * f) /
+            (dYAB * dxAC -differenceXAB * dYAB)
+    val yCircle = -(differenceXAB * f - dxAC * e) /
+            (dYAB * dxAC - differenceXAB * dYAC)
+    val circlenew  = Point(xCircle,yCircle)
+    return Circle(circlenew,circlenew.distance(a))
+
+}
 
 /**
  * Очень сложная
