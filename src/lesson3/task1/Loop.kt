@@ -3,6 +3,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import lesson4.task1.abs
 
 /**
  * Пример
@@ -65,9 +66,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int {
-    var qiclo: Int = n
-    if (n < 0)
-        qiclo = -n
+    var qiclo = Math.abs(n)
     var number: Int = 0
     for (i in 1..9999) {
         number += 1
@@ -87,12 +86,21 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    if (n <= 2) {
-        return 1
-    } else {
-        return fib(n - 2) + fib(n - 1)
+    val number = n
+    var num1 = 1
+    var num2 = 1
+    var a = 0
+    var d = 2
+    if (n == 1 || n == 2) return 1
+    for (i in 1..n) {
+        if (d < number) {
+            d++
+            a = num2
+            num2 += num1
+            num1 = a
+        }
     }
-
+    return num2
 }
 
 /**
@@ -102,13 +110,14 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    var minm: Int = 1
-    for (i in 2..m * n) {
-        minm += 1
-        if ((i % m == 0) && (i % n == 0)) break
-        else continue
+    var numberN = n
+    var numberM = m
+    while ((numberM > 0) && (numberN > 0)) {
+        if (numberN > numberM) numberN = numberN % numberM
+        else numberM = numberM % numberN
     }
-    return minm
+    val x = (m * n) / (numberN + numberM)
+    return x
 }
 
 /**
@@ -117,12 +126,8 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var min: Int = 1
-    for (i in 2..n) {
-        min += 1
-        if (n % i == 0) break
-        else continue
-    }
+    var min: Int = 2
+    while (n % min != 0 ) min++
     return min
 }
 
@@ -132,11 +137,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var max: Int = n
+    var max = n - 1
     for (i in 1..n) {
-        max -= 1
         if (n % max == 0) break
-        else continue
+        else max--
     }
     return max
 }
@@ -148,13 +152,7 @@ fun maxDivisor(n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    var result: Int = 0
-    for (i in 2..n) {
-        if ((n % i == 0) && (m % i == 0)) result += 1
-    }
-    return (result == 0)
-}
+fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 
 /**
  * Простая
@@ -223,19 +221,14 @@ fun cos(x: Double, eps: Double): Double {
  */
 fun revert(n: Int): Int {
     if (n == 0) return 0
-    else {
-        var x: Int
-        var y = 0
-        var z: Int = n
-        for (i in 1..200) {
-            x = z % 10
-            y = y * 10 + x
-            z = z / 10
-            if (z <= 0.01) break
-            else continue
-        }
-        return y
+    var num = n
+    var reversed = 0
+    while (num != 0) {
+        val digit = num % 10
+        reversed = reversed * 10 + digit
+        num /= 10
     }
+    return reversed
 }
 
 /**
@@ -245,12 +238,8 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    if (n == 0) return true
-    else {
-        return n == revert(n)
-    }
-}
+fun isPalindrome(n: Int): Boolean =
+        n == revert(n)
 
 /**
  * Средняя
@@ -259,26 +248,11 @@ fun isPalindrome(n: Int): Boolean {
  * Например, 54 и 323 состоят из разных цифр, а 111 и 0 из одинаковых.
  */
 fun hasDifferentDigits(n: Int): Boolean {
-    var x = n
-    var y = 1
-    var z :Int
-    var w = 0
-    while (x >= 10) {
-        x /= 10; w += 1; y *= 10
-    }
-    x = w
-    var k = y
-
-    for (i in 1..w) {
-        k = y
-        for (j in 1..x) {
-            k = y / 10
-            z = n / k % 10
-
-            if (z != (n / y % 10)) return true
+    val str = n.toString()
+    if (Math.abs(n) >= 10) {
+        for (i in 0..str.length / 2) {
+            if (str[i] != str[i + 1]) return true
         }
-        y /= 10
-        x -= 1
     }
     return false
 }
@@ -293,14 +267,13 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var numbers = 1
     var str = ""
-    var Nn = n
-    while (Nn > 0) {
+    var nN = n
+    while (nN > 0) {
         val sqrnumb = numbers * numbers
-        str = "$sqrnumb"
         numbers++
-        Nn -= str.length
+        nN -= str.length
     }
-    numbers = str.length - 1 + Nn
+    numbers = str.length - 1 + nN
     return str[numbers].toString().toInt()
 }
 
@@ -314,16 +287,14 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var numbers = 1
     var str = ""
-    var Nn = n
+    var nN= n
     var fibnumb: Int
-    while (Nn > 0) {
+    while (nN > 0) {
         fibnumb = fib(numbers)
         str = "$fibnumb"
         numbers++
-        Nn -= str.length
+        nN -= str.length
     }
-    numbers = str.length - 1 + Nn
+    numbers = str.length - 1 + nN
     return str[numbers].toString().toInt()
 }
-
-
