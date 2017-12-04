@@ -73,8 +73,8 @@ fun dateStrToDigit(str: String): String {
     val data = str.split(" ")
     val day = data[0].toInt()
     val day1 = if (day in 0..9)"0$day" else "$day"
-    var month =""
-    var answer=""
+    var month = buildString {  }
+    var answer= buildString {  }
     var long =0
     for (part in data)
         long +=1
@@ -108,9 +108,9 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    var answer = ""
+    var answer = buildString {  }
     var long = 0
-    var month = ""
+    var month = buildString {  }
     val data = digital.split(".")
     /**
      * if there have abc
@@ -172,7 +172,7 @@ fun flattenPhoneNumber(phone: String): String {
         abc =0
     }
     val parts = phone.split(" ")
-    var answer = ""
+    var answer = buildString {  }
         for (part in parts) {
             for(n in 0..part.length-1){
                 for (x in 0..10) {
@@ -197,7 +197,7 @@ fun flattenPhoneNumber(phone: String): String {
 fun bestLongJump(jumps: String): Int {
     if (jumps.isEmpty()) return -1
     val number = "1234567890"
-    var element = ""
+    var element = buildString {  }
     var numresult = -1
     for (el in jumps) {
         if (el in number) element += el
@@ -299,7 +299,7 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     if (description.isEmpty()) return ""
     var max = 0.0
-    var name = ""
+    var name = buildString {  }
     var parts = description.split("; ")
     for (i in parts){
         val parts2 = i.split(" ")

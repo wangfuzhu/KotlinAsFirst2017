@@ -67,16 +67,12 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var qiclo = Math.abs(n)
-    var number: Int = 0
-    for (i in 1..9999) {
+    var number = 0
+    do {
         number += 1
         qiclo /= 10
-        if (qiclo < 1) {
-            break
-        }
-    }
+    }while (qiclo > 0)
     return number
-
 }
 
 /**
@@ -86,19 +82,16 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    val number = n
     var num1 = 1
     var num2 = 1
-    var a = 0
+    var a: Int
     var d = 2
     if (n == 1 || n == 2) return 1
-    for (i in 1..n) {
-        if (d < number) {
+    for (i in 1 until n-1) {
             d++
             a = num2
             num2 += num1
             num1 = a
-        }
     }
     return num2
 }
@@ -126,7 +119,7 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var min: Int = 2
+    var min = 2
     while (n % min != 0 ) min++
     return min
 }
@@ -164,13 +157,10 @@ fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
     else {
-        var result: Int = 0
         for (i in 1..Math.ceil(Math.sqrt(n.toDouble())).toInt()) {
-            if ((i * i >= m) && (i * i <= n)) {
-                result += 1
-            }
+            if ((i * i >= m) && (i * i <= n)) return true
         }
-        return (result > 0)
+        return false
     }
 }
 
@@ -187,7 +177,8 @@ fun sin(x: Double, eps: Double): Double {
     val sinConst = sin
     var equation = sin
     while (Math.abs(equation) >= eps) {
-        equation = -equation * sinConst / ((counter * 2 + 1) * (counter * 2)).toDouble() * sinConst
+        equation = -equation * sinConst/ ((counter * 2 + 1)
+                * (counter * 2)).toDouble() * sinConst
         counter += 1
         sin += equation
     }
@@ -270,6 +261,7 @@ fun squareSequenceDigit(n: Int): Int {
     var nN = n
     while (nN > 0) {
         val sqrnumb = numbers * numbers
+        str = "$sqrnumb"
         numbers++
         nN -= str.length
     }
