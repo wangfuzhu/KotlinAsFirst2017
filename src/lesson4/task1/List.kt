@@ -128,17 +128,14 @@ fun mean(list: List<Double>): Double =
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> =
-        when {
-            list.isEmpty() -> list
-            else->{
-                val const= mean(list)
-                for (i in 0 until list.size) {
-                    list[i] -= const
-                }
-                list
-            }
-        }
+fun center(list: MutableList<Double>): MutableList<Double> {
+    val const= mean(list)
+    for (i in 0 until list.size) {
+        list[i] -= const
+    }
+    return list
+}
+
 
 /**
  * Средняя
@@ -161,16 +158,13 @@ fun times(a: List<Double>, b: List<Double>): Double  {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0.0 при любом x.
  */
-fun polynom(p: List<Double>, x: Double): Double =
-        when {
-            p.isEmpty() -> 0.0
-            else -> {
-                var px = 0.0
-                for (elCount in 0 until p.size)
-                    px += p[elCount] * pow(x, elCount.toDouble())
-                px
-            }
-        }
+fun polynom(p: List<Double>, x: Double): Double {
+    var px = 0.0
+    for (elCount in 0 until p.size)
+        px += p[elCount] * pow(x, elCount.toDouble())
+    return px
+}
+
 
 /**
  * Средняя
@@ -277,7 +271,7 @@ fun convertToString(n: Int, base: Int): String {
 fun decimal(digits: List<Int>, base: Int): Int {
     var answer = 0
     val list = digits.reversed()
-    var n=1
+    var n = 1
     for (i in 0 until digits.size){
         answer += list[i]*n
         n *= base
