@@ -269,14 +269,11 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var answer = 0
+    var n = 0
     val list = digits.reversed()
-    var n = 1
-    for (i in 0 until digits.size){
-        answer += list[i]*n
-        n *= base
-    }
-    return answer
+    for (i in 0 until digits.size)
+        n += list[i] * pow(base.toDouble(), i.toDouble()).toInt()
+    return n
 }
 /**
  * Сложная
@@ -312,7 +309,6 @@ fun roman(n: Int): String {
     val number = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var copy = n
     var i = 0
-    while (number[i] > n) i += 1
     while (copy > 0){
        while (copy >= number[i]){
            str += abc[i]
