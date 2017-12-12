@@ -237,7 +237,6 @@ fun convert(n: Int, base: Int): List<Int> {
         answer.add(copyN % base)
         copyN /= base
     }
-
     return answer.reversed()
 }
 
