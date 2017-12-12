@@ -156,7 +156,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
     else {
-        for (i in floor(sqrt(m.toDouble())).toInt()..ceil(1sqrt(n.toDouble())).toInt()) {
+        for (i in floor(sqrt(m.toDouble())).toInt()..ceil(sqrt(n.toDouble())).toInt()) {
             if ((i * i >= m) && (i * i <= n)) return true
         }
         return false

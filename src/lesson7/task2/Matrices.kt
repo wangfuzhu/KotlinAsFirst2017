@@ -59,8 +59,45 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  * 10 11 12  5
  *  9  8  7  6
  */
-fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
-
+fun generateSpiral(height: Int, width: Int): Matrix<Int> {
+    val matrix = createMatrix(height, width, 1)
+    var heightSide = 0
+    var widthSide = 0
+    var row = 0
+    var column = 0
+    var count = 1
+    var copyHeight = height
+    var copyWidth = width
+    while (count <= height * width) {
+        for (i in heightSide until copyHeight) {
+            column = i
+            matrix[row, column] = count
+            count++
+        }
+        widthSide++
+        if (widthSide <= copyWidth) return matrix
+        for (j in widthSide until copyWidth) {
+            row = j
+            matrix[row, column] = count
+            count++
+        }
+        copyWidth--
+        if (copyWidth <= heightSide) return matrix
+        for (a in copyWidth-1 downTo heightSide){
+            column = a
+            matrix[row, column] = count
+            count++
+        }
+        copyHeight--
+        if (copyHeight <= widthSide) return matrix
+        for (b in copyHeight-1 downTo widthSide){
+            row = b
+            matrix[row, column] = count
+            count++
+        }
+    }
+    return matrix
+}
 /**
  * Сложная
  *
@@ -103,7 +140,18 @@ fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
  * 4 5 6      8 5 2
  * 7 8 9      9 6 3
  */
-fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
+fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
+    if (matrix.height == matrix.width){
+        val newMatrix = createMatrix(matrix.height, matrix.width, matrix[0, 0])
+        for (i in 0 until matrix.height){
+            for (j in 0 until matrix.height)
+                newMatrix[i, j] = matrix[matrix.height-j-1, i]
+        }
+        return newMatrix
+    }
+    else throw  IllegalArgumentException()
+}
+
 
 /**
  * Сложная
@@ -126,7 +174,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO()
  * В матрице matrix каждый элемент заменить суммой непосредственно примыкающих к нему
  * элементов по вертикали, горизонтали и диагоналям.
  *
- * Пример для матрицы 4 x 3: (11=2+4+5, 19=1+3+4+5+6, ...)
+ * Пример для матрицы 4 x 3: (11=2+4+5, 19=1+3+4+5+6, 31=1+2+3+4+6+6+5+4)
  * 1 2 3       11 19 13
  * 4 5 6  ===> 19 31 19
  * 6 5 4       19 31 19
@@ -137,7 +185,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO()
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO()
 
 /**
  * Средняя
