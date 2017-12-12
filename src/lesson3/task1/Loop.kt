@@ -4,6 +4,7 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import lesson4.task1.abs
+import  java.lang.Math.*
 
 /**
  * Пример
@@ -85,10 +86,8 @@ fun fib(n: Int): Int {
     var num1 = 1
     var num2 = 1
     var a: Int
-    var d = 2
     if (n == 1 || n == 2) return 1
-    for (i in 1 until n-1) {
-            d++
+    for (i in 2 until n) {
             a = num2
             num2 += num1
             num1 = a
@@ -157,7 +156,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
     else {
-        for (i in Math.floor(Math.sqrt(m.toDouble())).toInt()..Math.ceil(Math.sqrt(n.toDouble())).toInt()) {
+        for (i in Math.floor(sqrt(m.toDouble())).toInt()..ceil(Math.sqrt(n.toDouble())).toInt()) {
             if ((i * i >= m) && (i * i <= n)) return true
         }
         return false
@@ -197,7 +196,9 @@ fun cos(x: Double, eps: Double): Double {
     var counter = 1
     var cos = 1.0
     while (Math.abs(equation) >= eps) {
-        equation = -equation * (x % (2 * Math.PI)) / ((counter * 2 - 1) * (counter * 2)).toDouble() * (x % (2 * Math.PI))
+        equation = -equation * (x % (2 * Math.PI)) /
+                ((counter * 2 - 1) * (counter * 2)).toDouble() *
+                (x % (2 * Math.PI))
         counter += 1
         cos += equation
     }
@@ -280,10 +281,10 @@ fun fibSequenceDigit(n: Int): Int {
     var numbers = 1
     var str = ""
     var nN= n
-    var fibnumb: Int
+    var fibNumb: Int
     while (nN > 0) {
-        fibnumb = fib(numbers)
-        str = "$fibnumb"
+        fibNumb = fib(numbers)
+        str = "$fibNumb"
         numbers++
         nN -= str.length
     }
