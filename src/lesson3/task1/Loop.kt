@@ -26,7 +26,7 @@ fun factorial(n: Int): Double {
  */
 fun isPrime(n: Int): Boolean {
     if (n < 2) return false
-    for (m in 2..Math.sqrt(n.toDouble()).toInt()) {
+    for (m in 2..sqrt(n.toDouble()).toInt()) {
         if (n % m == 0) return false
     }
     return true
@@ -156,7 +156,7 @@ fun isCoPrime(m: Int, n: Int): Boolean = (m * n) / lcm(m, n) == 1
 fun squareBetweenExists(m: Int, n: Int): Boolean {
     if ((m == 0) || (n == 0)) return true
     else {
-        for (i in Math.floor(sqrt(m.toDouble())).toInt()..ceil(Math.sqrt(n.toDouble())).toInt()) {
+        for (i in floor(sqrt(m.toDouble())).toInt()..ceil(sqrt(n.toDouble())).toInt()) {
             if ((i * i >= m) && (i * i <= n)) return true
         }
         return false
