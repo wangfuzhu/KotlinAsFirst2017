@@ -2,6 +2,7 @@
 package lesson5.task1
 
 import lesson7.task2.generateSnake
+import java.lang.StringBuilder
 import java.math.RoundingMode
 
 /**
@@ -70,35 +71,20 @@ fun main(args: Array<String>) {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateStrToDigit(str: String): String {
-    val data = str.split(" ")
-    val day = data[0].toInt()
-    val day1 = if (day in 0..9)"0$day" else "$day"
-    var month = buildString {  }
-    var answer= buildString {  }
-    var long =0
-    for (part in data)
-        long +=1
-    if (long!=3) return ""
-    when(data[1]){
-        "января" -> month += "01"
-        "февраля" -> month += "02"
-        "марта" -> month += "03"
-        "апреля" -> month += "04"
-        "мая" -> month += "05"
-        "июня" -> month += "06"
-        "июля" -> month += "07"
-        "августа" -> month += "08"
-        "сентября" -> month += "09"
-        "октября" -> month += "10"
-        "ноября" -> month += "11"
-        "декабря" -> month += "12"
-        else -> return ""
-    }
-    if (day>31) return ""
-    else {
-        answer += day1 + "." + month + "." + data[2]
-        return answer
-    }
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
+    val date = str.split(" ")
+    if (date.size == 3) {
+        try {
+            val day = date[0].toInt()
+            if ((date[1] in months) && (day in 1..31) && (date[2].toInt() in 1..9999)) {
+                val month = months.indexOf(date[1]) + 1
+                return String.format("%02d.%02d.%d", day, month, date[2].toInt())
+            } else return ""
+        } catch (e: NumberFormatException) {
+            return ""
+        }
+    } else return ""
 }
 /**
  * Средняя
@@ -108,44 +94,19 @@ fun dateStrToDigit(str: String): String {
  * При неверном формате входной строки вернуть пустую строку
  */
 fun dateDigitToStr(digital: String): String {
-    var answer = buildString {  }
-    var long = 0
-    var month = buildString {  }
-    val data = digital.split(".")
-    /**
-     * if there have abc
-     */
-    val number="0123456789"
-    var abc =0
-    for (i in 1..digital.length){
-        for (x in 1..number.length) {
-            if (digital[i - 1] == number[x - 1]) abc += 1
-        }
-        if (abc==0) return ""
+    val months = listOf("января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря")
+    val parts = digital.split(".")
+    if (parts.size != 3) return ""
+    try {
+        val day = parts[0].toInt()
+        val month = parts[1].toInt()
+        val year = parts[2].toInt()
+        if (day !in 1..31 || month !in 1..12 || year !in 1..9999) return ""
+        return String.format("%d %s %d", day, months[month - 1], year)
+    } catch (e: NumberFormatException) {
+        return ""
     }
-    val day = data[0].toInt()
-    val day1 = "$day"
-    for (part in data)
-        long +=1
-    if (long!=3) return ""
-    if (data[0].toInt() > 31) return ""
-    when(data[1]){
-        "01" -> month += "января"
-        "02" -> month += "февраля"
-        "03" -> month += "марта"
-        "04" -> month += "апреля"
-        "05" -> month += "мая"
-        "06" -> month += "июня"
-        "07" -> month += "июля"
-        "08" -> month += "августа"
-        "09" -> month += "сентября"
-        "10" -> month += "октября"
-        "11" -> month += "ноября"
-        "12" -> month += "декабря"
-        else -> return ""
-    }
-    answer += day1 + " "+month + " " + data[2]
-    return answer
 }
 
 /**
@@ -161,28 +122,18 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val Ture = "0123456789+()- "
-    var abc = 0
-    if((phone.length==0)||((phone.length==1)&&(phone[0]==Ture[14]))) return ""
-    for(i in 1..phone.length){
-        for (x in 1..Ture.length) {
-            if (phone[i - 1] == Ture[x - 1]) abc += 1
-        }
-        if (abc!=1) return ""
-        abc =0
+    val number = '0'..'9'
+    val ture = " ()-+"
+    var result = ""
+    if (phone.isEmpty() || phone.indexOf('+') > 0) return ""
+    for (i in phone) {
+        if (i !in number && i !in ture) return ""
     }
-    val parts = phone.split(" ")
-    var answer = buildString {  }
-        for (part in parts) {
-            for(n in 0..part.length-1){
-                for (x in 0..10) {
-                    if (part[n] == Ture[x])
-                        answer += part[n]
-                }
-                if (answer=="") return ""
+    for (j in phone) {
+            if (j in number || j == '+') result += j
+            else if (j !in ture) return ""
         }
-    }
-    return answer
+    return result
 }
 /**
  * Средняя
@@ -195,21 +146,19 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (jumps.isEmpty()) return -1
-    val number = "1234567890"
-    var element = buildString {  }
-    var numresult = -1
-    for (el in jumps) {
-        if (el in number) element += el
-        else if (el == ' ' || el == '-' || el == '%') {
-            if (element.isNotEmpty() && element.toInt() > numresult) numresult = element.toInt()
-            element = ""
-        } else return -1
+    val parts = jumps.split(" ")
+    var max = -1
+    try {
+        for (part in parts) {
+            if (part != "%" && part != "-") {
+                val number = part.toInt()
+                if (max < number) max = number
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return -1
     }
-    if (element.isNotEmpty() && element.toInt() > numresult) {
-        numresult = element.toInt()
-    }
-    return numresult
+    return max
 }
 
 /**
@@ -243,15 +192,19 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     if (expression.length == 0) throw IllegalArgumentException()
-    val parts = expression.split(" ")
-    var result = parts[0].toInt()
-    for (i in 2..parts.size step 2){
-        when {
-            parts[i-1] == "+" -> result += parts[i].toInt()
-            parts[i-1] == "-" -> result -= parts[i].toInt()
+    try {
+        val parts = expression.split(" ")
+        var result = parts[0].toInt()
+        for (i in 2..parts.size step 2) {
+            when {
+                parts[i - 1] == "+" -> result += parts[i].toInt()
+                parts[i - 1] == "-" -> result -= parts[i].toInt()
+            }
         }
+        return result
+    }catch (e:NumberFormatException){
+        throw IllegalArgumentException (e)
     }
-    return result
 }
 
 
@@ -268,7 +221,7 @@ fun firstDuplicateIndex(str: String): Int {
     val parts = str.toUpperCase().split(" ")
     var number = 0
     var answer = -1
-    for (part in parts){
+    for (part in 0 until parts.size){
         number +=1
     }
     if (number == 1) return -1
@@ -279,7 +232,6 @@ fun firstDuplicateIndex(str: String): Int {
         }
         else{
             answer += parts[i].length + 1
-            continue
         }
     }
     return answer
@@ -299,16 +251,20 @@ fun firstDuplicateIndex(str: String): Int {
 fun mostExpensive(description: String): String {
     if (description.isEmpty()) return ""
     var max = 0.0
-    var name = buildString {  }
-    var parts = description.split("; ")
-    for (i in parts){
-        val parts2 = i.split(" ")
-        for (x in 1 until parts2.size step 2){
-            if (parts2[x].toDouble()>max) {
-                max = parts2[x].toDouble()
-                name = parts2[x - 1]
+    var name = ""
+    try {
+        var parts = description.split("; ")
+        for (i in parts){
+            val parts2 = i.split(" ")
+            for (x in 1 until parts2.size step 2){
+                if (parts2[x].toDouble()>max) {
+                    max = parts2[x].toDouble()
+                    name = parts2[x - 1]
+                }
             }
         }
+    }catch (e: NumberFormatException){
+        return ""
     }
     return name
 }
@@ -326,37 +282,36 @@ fun mostExpensive(description: String): String {
  */
     fun fromRoman(roman: String): Int {
     var answer = 0
-    val Romeabc = "IVXLCDM"
+    val RomeAbc = "IVXLCDM"
     var abc =0
     for (i in 0 until roman.length){
-        for (x in 0 until Romeabc.length) {
-            if (roman[i] == Romeabc[x]) {
+        for (x in 0 until RomeAbc.length) {
+            if (roman[i] == RomeAbc[x]) {
                 abc += 1
             }
         }
-        if (abc==0) return -1
+        if (abc == 0) return -1
     }
     for (i in 0 until  roman.length){
         when (roman[i]){
-            Romeabc[6] -> answer += 1000
-            Romeabc[5] -> answer += 500
-            Romeabc[4] ->
-                if (i == roman.length - 1) answer += 100
-                else if((roman[i+1] == Romeabc[6]) || (roman[i+1] == Romeabc[5])){
+            RomeAbc[6] -> answer += 1000
+            RomeAbc[5] -> answer += 500
+            RomeAbc[4] ->
+                if((roman[i+1] == RomeAbc[6]) || (roman[i+1] == RomeAbc[5])){
                     answer -= 100
                 }
                 else answer += 100
-            Romeabc[3] ->  answer += 50
-            Romeabc[2] ->
+            RomeAbc[3] ->  answer += 50
+            RomeAbc[2] ->
                 if (i == roman.length - 1) answer += 10
-                else if ((roman[i+1] == Romeabc[3]) || (roman[i+1] == Romeabc[4])){
+                else if ((roman[i+1] == RomeAbc[3]) || (roman[i+1] == RomeAbc[4])){
                     answer -= 10
                 }
                 else answer += 10
-            Romeabc[1] -> answer +=5
-            Romeabc[0] ->
+            RomeAbc[1] -> answer +=5
+            RomeAbc[0] ->
                 if (i == roman.length - 1) answer += 1
-                else if ((roman[i+1] == Romeabc[2]) || (roman[i+1] == Romeabc[1])){
+                else if ((roman[i+1] == RomeAbc[2]) || (roman[i+1] == RomeAbc[1])){
                         answer -= 1
                 }
                 else answer += 1
