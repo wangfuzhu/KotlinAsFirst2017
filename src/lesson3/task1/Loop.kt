@@ -118,9 +118,10 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var min = 2
-    while (n % min != 0 ) min++
-    return min
+    for (i in 2..n) {
+        if (n % i == 0) return i
+    }
+    return 1
 }
 
 /**
@@ -129,12 +130,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var max = n - 1
-    for (i in 1..n) {
-        if (n % max == 0) break
-        else max--
+    for (i in n - 1 downTo 2){
+        if (n % i == 0) return i
     }
-    return max
+    return 1
 }
 
 /**
@@ -171,17 +170,18 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    var counter = 1
-    var sin = x % (2 * Math.PI)
-    val sinConst = sin
+    var counter = 0
+    val sin = x % (2 * Math.PI)
+    var sinConst = sin
     var equation = sin
-    while (Math.abs(equation) >= eps) {
-        equation = -equation * sinConst/ ((counter * 2 + 1)
-                * (counter * 2)).toDouble() * sinConst
-        counter += 1
-        sin += equation
+    while (abs(equation) >= eps) {
+        counter++
+        equation =  pow(sin, counter.toDouble() * 2 + 1) /
+                factorial(counter * 2 +1)
+        if (counter % 2 == 0) sinConst += equation
+        else sinConst -= equation
     }
-    return sin
+    return sinConst
 }
 
 /**

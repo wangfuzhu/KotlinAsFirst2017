@@ -202,14 +202,14 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> =
  */
 fun factorize(n: Int): List<Int> {
     var copy = n
-    var divosor = 2
+    var divisor = 2
     var list = mutableListOf<Int>()
     while (copy != 1){
-        while (copy % divosor == 0){
-            list.add(divosor)
-            copy /= divosor
-        }
-        divosor++
+        if (copy % divisor == 0) {
+            copy /= divisor
+            list.add(divisor)
+        } else
+            divisor++
     }
     return list
 }
@@ -230,7 +230,6 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
 fun convert(n: Int, base: Int): List<Int> {
-    if (n<base) return listOf(n)
     var copyN = n
     val answer = mutableListOf<Int>()
     while(copyN > 0){
@@ -250,13 +249,12 @@ fun convert(n: Int, base: Int): List<Int> {
  */
 fun convertToString(n: Int, base: Int): String {
     val list = convert(n,base)
-    val abc = "abcdefghijklmnopqrstuvwxyz"
-    var answer = buildString {}
-    for (i in 0 until list.size)
-        if (list[i] > 9)
-            answer += abc[list[i]-10]
-    else answer += list[i]
-    return answer
+    val abc = mutableListOf<Char>()
+    for (i in list) {
+        if (i > 9) abc.add('a' + i - 10)
+        else abc.add('0' + i)
+    }
+    return abc.joinToString ("")
 }
 
 
@@ -285,13 +283,11 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     val list = mutableListOf<Int>()
-    val number = "0123456789"
-    val abc = "abcdefghijklmnopqrstuvwxyz"
-    for(i in 0 until str.length )
-        if (str[i] in number)
-            list.add(number.indexOf(str[i]))
-        else list.add(abc.indexOf(str[i])+10)
-    return decimal(list,base)
+    for (i in str) {
+        if (i in '0'..'9') list += (i - '0')
+        else list += (i - 'a' + 10)
+    }
+    return decimal(list, base)
 }
 
 /**
@@ -303,7 +299,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var str = buildString {  }
+    var str = buildString {0}
     val abc = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val number = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var copy = n
@@ -325,40 +321,52 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
+val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот",
+        "шестьсот", "семьсот", "восемьсот", "девятьсот")
+val ten = listOf("десять", "одиннадцать", "двенадцать",
+        "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
+        "семнадцать", "восемнадцать", "девятнадцать")
+val tens = listOf("двадцать", "тридцать", "сорок", "пятьдесят",
+        "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+val one = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь",
+        "восемь", "девять")
+fun russianHun(n: Int): List<String> {
+    val result = mutableListOf<String>()
+    var copy = n % 1000
+    for (i in 1..9) {
+        if (n / 100 == i) result.add(hundreds[i - 1])
+    }
+    copy %= 100
+    for (i in 1..9) {
+        if ((copy < 20) && (copy > 9)) {
+            if ((i == 1) && (copy == i + 9)) result.add(ten[0])
+            if (copy == i + 10) result.add(ten[i])
+        } else {
+            copy /= 10
+            for (b in 2..9) {
+                if (copy == b) result.add(tens[b - 2])
+            }
+            copy = n % 10
+            if (copy == i) result.add(one[i - 1])
+        }
+    }
+    return result
+}
+
 fun russian(n: Int): String {
-    var str = buildString {  }
-    val number = listOf<Int>(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,30,40,50,60,70,80,90,100,200,300,400,500,600,700,800,900)
-    val numRu = listOf<String>("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять" , "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать"  , "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    var copy = n
-    var copy1 = n
-    if (n == 0) return "ноль"
-    if (copy/1000>=1){
-        copy%=1000
-        copy1/=1000
-        for(x in 36 downTo 0){
-            if (copy >= number[x]) {
-                str += numRu[x]
-                copy -= number[x]
-            }
-            else break
-        }
-        str = str +" тысячи"
-        for (i in 36 downTo 1) {
-            if (copy >= number[i]) {
-                str += numRu[i]
-                copy -= number[i]
-            }
-            else break
-        }
+    val result = mutableListOf<String>()
+    val part1 = n / 1000
+    if (part1 > 0) {
+        result.addAll(russianHun(part1))
+        when{
+            ((part1 % 10 == 1) && (part1 / 10 % 10 != 1))
+            -> result[result.size-1] = "одна тысяча"
+            ((part1 % 10 in 2..4) && (part1 % 100 !in 12..14))
+                    -> result[result.size-1] = "две тысячи"
+            else -> result.add("тысяч")
     }
-    else {
-        for (i in 36 downTo 1) {
-            if (copy >= number[i]) {
-                str += numRu[i]
-                copy -= number[i]
-                }
-            else break
-        }
     }
-    return str
+    val part2 = n % 1000
+    result.addAll(russianHun(part2))
+    return result.joinToString(separator = " ")
 }
