@@ -171,17 +171,17 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  */
 fun sin(x: Double, eps: Double): Double {
     var counter = 0
-    val sin = x % (2 * Math.PI)
-    var sinConst = sin
-    var equation = sin
+    val sinConst = x % (2 * Math.PI)
+    var sin = sinConst
+    var equation = sinConst
     while (abs(equation) >= eps) {
         counter++
-        equation =  pow(sin, counter.toDouble() * 2 + 1) /
-                factorial(counter * 2 +1)
-        if (counter % 2 == 0) sinConst += equation
-        else sinConst -= equation
+        equation = pow(sinConst, counter.toDouble() * 2 + 1) /
+                factorial(2 * counter + 1)
+        if (counter % 2 == 0) sin += equation
+        else sin -= equation
     }
-    return sinConst
+    return sin
 }
 
 /**
@@ -192,15 +192,16 @@ fun sin(x: Double, eps: Double): Double {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun cos(x: Double, eps: Double): Double {
-    var equation = 1.0
-    var counter = 1
+    val cos1 = x % (2 * Math.PI)
+    var equation = cos1
+    var counter = 0
     var cos = 1.0
-    while (Math.abs(equation) >= eps) {
-        equation = -equation * (x % (2 * Math.PI)) /
-                ((counter * 2 - 1) * (counter * 2)).toDouble() *
-                (x % (2 * Math.PI))
-        counter += 1
-        cos += equation
+    while (abs(equation) >= eps) {
+        counter++
+        equation = pow(cos1, counter.toDouble() * 2) /
+                factorial(2 * counter)
+        if (counter % 2 == 1) cos -= equation
+        else cos += equation
     }
     return cos
 }
