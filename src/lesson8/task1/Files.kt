@@ -69,8 +69,27 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    val lines = File(inputName).readLines()
+    val mistakeChangeMap = mapOf('Ы' to 'И', 'ы' to 'и', 'Ю' to 'У',
+            'ю' to 'у', 'Я' to 'А', 'я' to 'а')
+    for (i in 0 until lines.size) {
+        if (lines[i].length <= 1) {
+            outputStream.write(lines[i])
+        } else {
+            val firstChar = lines[i][0].toString()
+            outputStream.write(firstChar)
+            for (j in 1 until lines[i].length) {
+                if ((lines[i][j] in "ыЫюЮяЯ") && (lines[i][j - 1] in "жЖчЧшШщЩ")) {
+                    outputStream.write(mistakeChangeMap[lines[i][j]].toString())
+                } else outputStream.write(lines[i][j].toString())
+            }
+        }
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**

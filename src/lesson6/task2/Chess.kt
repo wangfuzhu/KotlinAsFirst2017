@@ -206,7 +206,6 @@ fun kingMoveNumber(start: Square, end: Square): Int =
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
 fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
-
 /**
  * Сложная
  *
