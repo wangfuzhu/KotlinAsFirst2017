@@ -156,14 +156,14 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> =
             -1 -> listOf()
             else -> {
                 var x = (end.row - start.row + end.column + start.column) / 2
-                var y = end.row - start.column + start.row + end.column / 2
+                var y = (end.row - start.column + start.row + end.column) / 2
                 if (x in 1..8 && y in 1..8) {
                     x = x
                     y = y
                 }
                 else {
-                    x = end.column + end.column + start.column
-                    y = end.row + end.column + start.column
+                    x = end.column - y + start.row
+                    y = end.row - y + start.row
                 }
                 listOf(start, Square(x, y) , end)
             }
