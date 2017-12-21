@@ -192,7 +192,6 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> =
 
     }
 
-
 /**
  * Средняя
  *
