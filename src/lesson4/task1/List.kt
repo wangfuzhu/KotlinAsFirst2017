@@ -299,19 +299,19 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var str = buildString {0}
+    var str = mutableListOf<String>()
     val abc = listOf<String>("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     val number = listOf<Int>(1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
     var copy = n
     var i = 0
     while (copy > 0){
        while (copy >= number[i]){
-           str += abc[i]
+           str.add(abc[i])
            copy -= number[i]
        }
         i++
     }
-    return str
+    return str.joinToString("")
 }
 
 /**

@@ -14,7 +14,7 @@ import  java.lang.Math.*
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result = result * i
     }
     return result
 }
@@ -118,10 +118,9 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n) {
-        if (n % i == 0) return i
-    }
-    return 1
+    var divisor = 2
+    while (n % divisor != 0) divisor++
+    return divisor
 }
 
 /**
@@ -129,12 +128,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (i in n - 1 downTo 2){
-        if (n % i == 0) return i
-    }
-    return 1
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -262,8 +256,8 @@ fun squareSequenceDigit(n: Int): Int {
     var str = ""
     var nN = n
     while (nN > 0) {
-        val sqrnumb = numbers * numbers
-        str = "$sqrnumb"
+        val sqrNumb = numbers * numbers
+        str = "$sqrNumb"
         numbers++
         nN -= str.length
     }

@@ -126,13 +126,18 @@ fun flattenPhoneNumber(phone: String): String {
     val ture = " ()-+"
     var result = ""
     if (phone.isEmpty() || phone.indexOf('+') > 0) return ""
+    var jia = 0
+    for (i in 0 until phone.length){
+        if (phone[i] == ture[4]) jia += 1
+    }
+    if (jia > 1) return ""
     for (i in phone) {
         if (i !in number && i !in ture) return ""
     }
     for (j in phone) {
-            if (j in number || j == '+') result += j
-            else if (j !in ture) return ""
-        }
+        if (j in number || j == '+') result += j
+        else if (j !in ture) return ""
+    }
     return result
 }
 /**
@@ -173,6 +178,13 @@ fun bestLongJump(jumps: String): Int {
  */
 fun bestHighJump(jumps: String): Int {
     val parts = jumps.split(" ")
+    val ture = " +%-"
+    val tureNum = '0'..'9'
+    for (i in 0 until jumps.length){
+        if ((jumps[i] !in ture) && (jumps[i] !in tureNum))
+            return -1
+    }
+    if (parts.size <= 1) return -1
     var max = -1
     for (part in 1 until parts.size step 2) {
         for (i in parts[part]) {
@@ -192,6 +204,12 @@ fun bestHighJump(jumps: String): Int {
  */
 fun plusMinus(expression: String): Int {
     if (expression.length == 0) throw IllegalArgumentException()
+    val ture = " +-"
+    val tureNum = '0'..'9'
+    for (i in 0 until expression.length){
+        if ((expression[i] !in ture) && (expression[i] !in tureNum))
+            return -1
+    }
     try {
         val parts = expression.split(" ")
         var result = parts[0].toInt()
@@ -199,6 +217,7 @@ fun plusMinus(expression: String): Int {
             when {
                 parts[i - 1] == "+" -> result += parts[i].toInt()
                 parts[i - 1] == "-" -> result -= parts[i].toInt()
+                else -> -1
             }
         }
         return result
@@ -220,21 +239,11 @@ fun plusMinus(expression: String): Int {
 fun firstDuplicateIndex(str: String): Int {
     val parts = str.toUpperCase().split(" ")
     var number = 0
-    var answer = -1
-    for (part in 0 until parts.size){
-        number +=1
+    for (i in 0..parts.size - 2) {
+        if (parts[i] == parts[i + 1]) return number
+        number += parts[i].length + 1
     }
-    if (number == 1) return -1
-    for (i in 0..number - 2){
-        if (parts[i] == parts[i+1]){
-            answer += 1
-            break
-        }
-        else{
-            answer += parts[i].length + 1
-        }
-    }
-    return answer
+    return -1
 }
 
 /**
@@ -263,7 +272,7 @@ fun mostExpensive(description: String): String {
                 }
             }
         }
-    }catch (e: NumberFormatException){
+    } catch (e: NumberFormatException) {
         return ""
     }
     return name
@@ -282,39 +291,74 @@ fun mostExpensive(description: String): String {
  */
     fun fromRoman(roman: String): Int {
     var answer = 0
-    val RomeAbc = "IVXLCDM"
-    var abc =0
-    for (i in 0 until roman.length){
-        for (x in 0 until RomeAbc.length) {
-            if (roman[i] == RomeAbc[x]) {
+    val romeAbc = "IVXLCDM"
+    var abc = 0
+    for (i in 0 until roman.length) {
+        for (x in 0 until romeAbc.length) {
+            if (roman[i] == romeAbc[x]) {
                 abc += 1
             }
         }
         if (abc == 0) return -1
     }
-    for (i in 0 until  roman.length){
-        when (roman[i]){
-            RomeAbc[6] -> answer += 1000
-            RomeAbc[5] -> answer += 500
-            RomeAbc[4] ->
-                if((roman[i+1] == RomeAbc[6]) || (roman[i+1] == RomeAbc[5])){
-                    answer -= 100
+    for (j in 0 until  roman.length) {
+        if (j == roman.length - 1) abc = 0
+        else when (roman[j]) {
+            romeAbc[5] ->
+                if (roman[j + 1] == romeAbc[6])
+                    return -1
+            romeAbc[3] -> {
+                when (roman[j + 1]) {
+                    romeAbc[6] -> -1
+                    romeAbc[5] -> -1
+                    romeAbc[4] -> -1
                 }
-                else answer += 100
-            RomeAbc[3] ->  answer += 50
-            RomeAbc[2] ->
-                if (i == roman.length - 1) answer += 10
-                else if ((roman[i+1] == RomeAbc[3]) || (roman[i+1] == RomeAbc[4])){
-                    answer -= 10
+            }
+            romeAbc[2] -> {
+                when (roman[j + 1]) {
+                    romeAbc[6] -> -1
+                    romeAbc[5] -> -1
                 }
-                else answer += 10
-            RomeAbc[1] -> answer +=5
-            RomeAbc[0] ->
-                if (i == roman.length - 1) answer += 1
-                else if ((roman[i+1] == RomeAbc[2]) || (roman[i+1] == RomeAbc[1])){
+            }
+            romeAbc[1] -> {
+                when (roman[j + 1]) {
+                    romeAbc[6] -> -1
+                    romeAbc[5] -> -1
+                    romeAbc[4] -> -1
+                    romeAbc[3] -> -1
+                    romeAbc[2] -> -1
+                }
+            }
+            romeAbc[0] -> {
+                when (roman[j + 1]) {
+                    romeAbc[6] -> -1
+                    romeAbc[5] -> -1
+                    romeAbc[4] -> -1
+                    romeAbc[3] -> -1
+                }
+            }
+        }
+    }
+        for (i in 0 until roman.length) {
+            when (roman[i]) {
+                romeAbc[6] -> answer += 1000
+                romeAbc[5] -> answer += 500
+                romeAbc[4] ->
+                    if ((roman[i + 1] == romeAbc[6]) || (roman[i + 1] == romeAbc[5])) {
+                        answer -= 100
+                    } else answer += 100
+                romeAbc[3] -> answer += 50
+                romeAbc[2] ->
+                    if (i == roman.length - 1) answer += 10
+                    else if ((roman[i + 1] == romeAbc[3]) || (roman[i + 1] == romeAbc[4])) {
+                        answer -= 10
+                    } else answer += 10
+                romeAbc[1] -> answer += 5
+                romeAbc[0] ->
+                    if (i == roman.length - 1) answer += 1
+                    else if ((roman[i + 1] == romeAbc[2]) || (roman[i + 1] == romeAbc[1])) {
                         answer -= 1
-                }
-                else answer += 1
+                    } else answer += 1
             }
         }
     return answer
