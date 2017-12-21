@@ -169,7 +169,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = Line(s.begin,Math.atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))
+fun lineBySegment(s: Segment): Line = Line(s.begin, Math.atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))
 
 /**
  * Средняя
@@ -194,7 +194,7 @@ fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x)/ 2,(a.y 
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     var first = circles[0]
     var second = circles[1]
-    var min = circles[0].center.distance(circles[1].center)- circles[0].radius - circles[1].radius
+    var min =  circles[0].distance(circles[1])
     if (circles.isEmpty() || circles.size < 2) throw IllegalArgumentException()
     else if (circles.size == 2) return Pair(first,second)
     else {
