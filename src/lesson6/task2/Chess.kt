@@ -253,7 +253,7 @@ fun kingTrajectory(start: Square, end: Square): List<Square> {
  * Если любая из клеток некорректна, бросить IllegalArgumentException().
  *
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
- * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
+ * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3)
  */
 fun nextKnightMove(start: Square): List<Square> {
     val result = mutableListOf<Square>()

@@ -189,7 +189,7 @@ fun bisectorByPoints(a: Point, b: Point): Line = Line(Point((a.x + b.x)/ 2,(a.y 
  * Средняя
  *
  * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
- * Если в списке менее двух окружностей, бросить IllegalArgumentException
+ * Если в списке менее двух окружностей, бросить IllegalArgumentException.
  */
 fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> {
     var first = circles[0]
