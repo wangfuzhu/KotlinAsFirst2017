@@ -115,10 +115,10 @@ fun diameter(vararg points: Point): Segment {
     else if (points.size == 2) return Segment(points[0],points[1])
     else{
         var longest = Segment(points[0],points[0])
-        for (first in points){
-            for (second in points){
-                if (first.distance(second) > longest.length()){
-                    longest = Segment(first,second)
+        for (first in 0 until points.size){
+            for (second in first + 1 until points.size){
+                if (points[first].distance(points[second]) > longest.length()){
+                    longest = Segment(points[first],points[second])
                 }
             }
         }
@@ -169,7 +169,7 @@ class Line private constructor(val b: Double, val angle: Double) {
  *
  * Построить прямую по отрезку
  */
-fun lineBySegment(s: Segment): Line = Line(s.begin, Math.atan((s.end.y - s.begin.y) / (s.end.x - s.begin.x)))
+fun lineBySegment(s: Segment): Line = Line(s.begin, Math.atan2((s.end.y - s.begin.y) , (s.end.x - s.begin.x)))
 
 /**
  * Средняя
@@ -231,9 +231,8 @@ fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
             (dYAB * dxAC -differenceXAB * dYAB)
     val yCircle = -(differenceXAB * f - dxAC * e) /
             (dYAB * dxAC - differenceXAB * dYAC)
-    val circlenew  = Point(xCircle,yCircle)
-    return Circle(circlenew,circlenew.distance(a))
-
+    val circleNew  = Point(xCircle,yCircle)
+    return Circle(circleNew,circleNew.distance(a))
 }
 
 /**

@@ -131,9 +131,6 @@ fun flattenPhoneNumber(phone: String): String {
         if (phone[i] == ture[4]) jia += 1
     }
     if (jia > 1) return ""
-    for (i in phone) {
-        if (i !in number && i !in ture) return ""
-    }
     for (j in phone) {
         if (j in number || j == '+') result += j
         else if (j !in ture) return ""
@@ -262,10 +259,10 @@ fun mostExpensive(description: String): String {
     var name = ""
     try {
         var parts = description.split("; ")
-        for (i in parts){
+        for (i in parts) {
             val parts2 = i.split(" ")
-            for (x in 1 until parts2.size step 2){
-                if (parts2[x].toDouble()>max) {
+            for (x in 1 until parts2.size step 2) {
+                if (parts2[x].toDouble() > max) {
                     max = parts2[x].toDouble()
                     name = parts2[x - 1]
                 }

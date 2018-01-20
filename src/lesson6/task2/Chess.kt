@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson6.task2
+import com.sun.corba.se.impl.orbutil.graph.Graph
 import java.lang.Math.*
+import lesson6.task3.*
 
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
@@ -36,10 +38,9 @@ data class Square(val column: Int, val row: Int) {
  * Если нотация некорректна, бросить IllegalArgumentException
  */
 fun square(notation: String): Square {
-    if ((notation[1].toInt() >= 1) && (notation[1].toInt() <= 8) &&
-            (notation[0].toInt() <= 8) && (notation[0].toInt() >= 1 )){
+    if (notation[1] !in '1'..'8')
         throw IllegalArgumentException()
-    } else return Square((notation[0] - 'a') + 1, notation[1].toString().toInt())
+    else return Square((notation[0] - 'a') + 1, notation[1].toString().toInt())
 }
 /**
  * Простая
@@ -155,17 +156,13 @@ fun bishopTrajectory(start: Square, end: Square): List<Square> =
             1 -> listOf(start,end)
             -1 -> listOf()
             else -> {
-                var x = (end.row - start.row + end.column + start.column) / 2
-                var y = (end.row - start.column + start.row + end.column) / 2
-                if (x in 1..8 && y in 1..8) {
-                    x = x
-                    y = y
-                }
-                else {
+                var y = (end.row -start.row + end.column -start.column) / 2 + 1
+                var x = start.column + y - 1
+                if (x in 1..8 && y in 1..8) listOf(start, Square(x, y), end)
+                else
                     x = end.column - y + start.row
                     y = end.row - y + start.row
-                }
-                listOf(start, Square(x, y) , end)
+                listOf(start, Square(x, y), end)
             }
         }
 
@@ -211,7 +208,30 @@ fun kingMoveNumber(start: Square, end: Square): Int =
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    if (!start.inside() && !end.inside()) throw IllegalArgumentException()
+    val points = mutableListOf(start)
+    var moveRow = start.row
+    var moveColumn = start.column
+    while (points.last().row != end.row && points.last().column != end.column){
+        if (end.row > start.row) moveRow++
+        else moveRow--
+        if (end.column > start.column) moveColumn++
+        else moveColumn--
+        points.add(Square(moveColumn,moveRow))
+    }
+    while (moveColumn != end.column) {
+        if (end.column > start.column) moveColumn++
+        else moveColumn--
+        points.add(Square(moveColumn, moveRow))
+    }
+    while (moveRow != end.row) {
+        if (end.row > start.row) moveRow++
+        else moveRow--
+        points.add(Square(moveColumn, moveRow))
+    }
+    return points
+}
 /**
  * Сложная
  *
@@ -235,15 +255,17 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-
-fun knightMoveNumber(start: Square, end: Square): Int {
-    if (start.inside() && end.inside())
-        return when{
-            (start.column == end.column) && (start.row == end.row) -> 0
-            else -> (abs(start.column - end.column) + abs(start.row - end.row)) / 3
-        }
-    else throw IllegalArgumentException()
+fun nextKnightMove(start: Square): List<Square> {
+    val result = mutableListOf<Square>()
+    var x = 1
+    var y = 1
+    while (x > 8 && y > 8)
+        if (abs( start.column - x) + abs( start.row - y) == 3)
+            result.add(Square(x, y))
+    return result
 }
+
+fun knightMoveNumber(start: Square, end: Square): Int = TODO()
 
 /**
  * Очень сложная

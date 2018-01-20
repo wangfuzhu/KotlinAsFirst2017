@@ -60,40 +60,30 @@ operator fun Matrix<Int>.plus(other: Matrix<Int>): Matrix<Int> {
  *  9  8  7  6
  */
 fun generateSpiral(height: Int, width: Int): Matrix<Int> {
-    val matrix = createMatrix(height, width, 1)
-    var heightSide = 0
-    var widthSide = 0
-    var row = 0
-    var column = 0
-    var count = 1
-    var copyHeight = height
-    var copyWidth = width
-    while (count <= height * width) {
-        for (i in heightSide until copyHeight) {
-            column = i
-            matrix[row, column] = count
-            count++
+    val matrix = createMatrix(height, width, 0)
+    var x = -1
+    var y = 0
+    var result = 0
+    while (result < height * width){
+        while (x + 1< width && matrix[y, x + 1] == 0) {
+            x += 1
+            result += 1
+            matrix[y, x] = result
         }
-        widthSide++
-        if (widthSide <= copyWidth) return matrix
-        for (j in widthSide until copyWidth) {
-            row = j
-            matrix[row, column] = count
-            count++
+        while (y + 1 < height && matrix[y + 1, x] ==0){
+            y += 1
+            result +=1
+            matrix[y, x] = result
         }
-        copyWidth--
-        if (copyWidth <= heightSide) return matrix
-        for (a in copyWidth-1 downTo heightSide){
-            column = a
-            matrix[row, column] = count
-            count++
+        while (x - 1 >= 0 && matrix[y, x-1] == 0){
+            x -= 1
+            result +=1
+            matrix[y, x] = result
         }
-        copyHeight--
-        if (copyHeight <= widthSide) return matrix
-        for (b in copyHeight-1 downTo widthSide){
-            row = b
-            matrix[row, column] = count
-            count++
+        while (y - 1 >= 0 && matrix[y-1, x] == 0){
+            y -= 1
+            result += 1
+            matrix[y, x] = result
         }
     }
     return matrix
