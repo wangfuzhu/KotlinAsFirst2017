@@ -69,13 +69,27 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-
-fun sibilants(inputName: String, outputName: String) {
+ fun sibilants(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    for (lines in File(inputName).readLines()){
-        if
+    for (line in File(inputName).readLines()){
+        var result = ""
+        for(letter in 0..line.length-1){
+            if(letter - 1 >= 0 && line[letter-1] in "ЖжЧчШшЩщ" && line[letter] in "ЫыЯяЮю"){
+                result += when(line[letter]){
+                    'Ы' -> "И"
+                    'Я' -> "А"
+                    'Ю' -> "У"
+                    'ы' -> "и"
+                    'я' -> "а"
+                    else -> "у"
+                }
+            }
+            else result += line[letter]
+        }
+        writer.write(result)
+        writer.newLine()
     }
-
+    writer.close()
 }
 
 /**
