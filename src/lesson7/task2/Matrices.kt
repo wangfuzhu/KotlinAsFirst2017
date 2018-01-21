@@ -102,7 +102,34 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> {
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    val matrix = createMatrix(height, width, 0)
+    var result = 0
+    var y = 0
+    var x = -1
+    var number = 1
+    while (number <= height * width) {
+        result += 1
+        number += 1
+        while (x + 1 < width && matrix[y, x + 1] == 0) {
+            x += 1
+            matrix[y, x] = result
+        }
+        while (y + 1 < height && matrix[y + 1, x] == 0) {
+            y += 1
+            matrix[y, x] = result
+        }
+        while (x - 1 >= 0 && matrix[y, x - 1] == 0) {
+            x -= 1
+            matrix[y, x] = result
+        }
+        while (y - 1 >= 0 && matrix[y - 1, x] == 0) {
+            y -= 1
+            matrix[y, x] = result
+        }
+    }
+    return matrix
+}
 /**
  * Сложная
  *
@@ -116,7 +143,25 @@ fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
  * 10 13 16 18
  * 14 17 19 20
  */
-fun generateSnake(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateSnake(height: Int, width: Int): Matrix<Int> {
+    val matrix = createMatrix(height, width, 0)
+    var y = -1
+    var x = 1
+    var number = 0
+    while (number < height * width){
+        var xEnd = x
+        var yEnd = y
+        while (yEnd + 1 < height && xEnd - 1 >= 0){
+            number += 1
+            xEnd -= 1
+            yEnd += 1
+            matrix[yEnd, xEnd] = number
+        }
+        if (x + 1 <= width) x += 1
+        else y += 1
+    }
+    return matrix
+}
 
 /**
  * Средняя
@@ -156,25 +201,26 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> {
  * 3 1 2
  */
 fun isLatinSquare(matrix: Matrix<Int>): Boolean {
-    if (matrix.height == matrix.width) {
-        for (i in 0 until matrix.width) {
-            val listMatrixValue = mutableListOf<Int>()
-            for (j in 0 until matrix.height) {
-                if ((matrix[i, j] !in listMatrixValue) && (matrix[i, j] in 1..matrix.height)) {
-                    listMatrixValue.add(matrix[i, j])
-                } else return false
-            }
-        }
+    if (matrix.height != matrix.width) return false
+    else{
         for (j in 0 until matrix.height) {
-            val listMatrixValue = mutableListOf<Int>()
+            val numbers = mutableListOf<Int>()
             for (i in 0 until matrix.width) {
-                if ((matrix[i, j] !in listMatrixValue) && (matrix[i, j] in 1..matrix.width)) {
-                    listMatrixValue.add(matrix[i, j])
-                } else return false
+                if ((matrix[i, j] in numbers) || (matrix[i, j] !in 1..matrix.width))
+                    return false
+                else numbers.add(matrix[i, j])
             }
         }
-    } else throw IllegalArgumentException()
-    return true
+        for (i in 0 until matrix.width) {
+            val numbers = mutableListOf<Int>()
+            for (j in 0 until matrix.height) {
+                if ((matrix[i, j] in numbers) || (matrix[i, j] !in 1..matrix.height))
+                    return false
+                else numbers.add(matrix[i, j])
+            }
+        }
+        return true
+    }
 }
 
 /**
@@ -194,7 +240,23 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO()
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  {
+    val result = createMatrix(matrix.height, matrix.width, 0)
+    if (matrix.height == 1 && matrix.width == 1) return result
+    for (i in 0 until matrix.height){
+        for (j in 0 until matrix.width){
+            if (j - 1 >= 0) result[i, j] += matrix[i, j - 1]  //左边
+            if (j + 1 < matrix.width) result[i, j] += matrix[i, j + 1]
+            if (i + 1 < matrix.height) result[i, j] += matrix[i + 1, j]
+            if (i - 1 >= 0) result[i, j] += matrix[i - 1, j]
+            if (j - 1 >= 0 && i - 1 >= 0) result[i, j] += matrix[i - 1, j - 1]
+            if (j + 1 < matrix.width && i - 1 >= 0) result[i, j] += matrix[i - 1, j + 1]
+            if (j - 1 >= 0 && i + 1 < matrix.height) result[i, j] += matrix[i + 1, j - 1]
+            if (j + 1 < matrix.width && i + 1 < matrix.height) result[i, j] += matrix[i + 1, j + 1]
+        }
+    }
+    return result
+}
 
 /**
  * Средняя
@@ -211,7 +273,27 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  = TODO()
  * 0 0 1 0
  * 0 0 0 0
  */
-fun findHoles(matrix: Matrix<Int>): Holes = TODO()
+fun findHoles(matrix: Matrix<Int>): Holes {
+    val listRow = mutableListOf<Int>()
+    val listColumn = mutableListOf<Int>()
+    for (i in 0 until matrix.height){
+        var rowHoles = 0
+        for (j in 0 until matrix.width){
+            if (matrix[i, j] == 0)
+                rowHoles += 1
+        }
+        if (rowHoles == matrix.width) listRow.add(i)
+    }
+    for (j in 0 until matrix.width) {
+        var holesColumn = 0
+        for (i in 0 until matrix.height) {
+            if (matrix[i, j] == 0)
+               holesColumn += 1
+        }
+        if ( holesColumn == matrix.height) listColumn.add(j)
+    }
+    return Holes(listRow, listColumn)
+}
 
 /**
  * Класс для описания местонахождения "дырок" в матрице
@@ -232,7 +314,19 @@ data class Holes(val rows: List<Int>, val columns: List<Int>)
  *
  * К примеру, центральный элемент 12 = 1 + 2 + 4 + 5, элемент в левом нижнем углу 12 = 1 + 4 + 7 и так далее.
  */
-fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> = TODO()
+fun sumSubMatrix(matrix: Matrix<Int>): Matrix<Int> {
+    val result = createMatrix(matrix.height, matrix.width,0)
+    for (i in 0 until matrix.height){
+        for (j in 0 until matrix.width){
+            for (iEnd in 0..i){
+                for (jEnd in 0..j){
+                    result[i, j] += matrix[iEnd, jEnd]
+                }
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
