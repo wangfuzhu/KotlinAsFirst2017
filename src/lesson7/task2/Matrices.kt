@@ -241,21 +241,7 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  * 42 ===> 0
  */
 fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int>  {
-    val result = createMatrix(matrix.height, matrix.width, 0)
-    if (matrix.height == 1 && matrix.width == 1) return result
-    for (i in 0 until matrix.height){
-        for (j in 0 until matrix.width){
-            if (j - 1 >= 0) result[i, j] += matrix[i, j - 1]  //左边
-            if (j + 1 < matrix.width) result[i, j] += matrix[i, j + 1]
-            if (i + 1 < matrix.height) result[i, j] += matrix[i + 1, j]
-            if (i - 1 >= 0) result[i, j] += matrix[i - 1, j]
-            if (j - 1 >= 0 && i - 1 >= 0) result[i, j] += matrix[i - 1, j - 1]
-            if (j + 1 < matrix.width && i - 1 >= 0) result[i, j] += matrix[i - 1, j + 1]
-            if (j - 1 >= 0 && i + 1 < matrix.height) result[i, j] += matrix[i + 1, j - 1]
-            if (j + 1 < matrix.width && i + 1 < matrix.height) result[i, j] += matrix[i + 1, j + 1]
-        }
-    }
-    return result
+    TODO()
 }
 
 /**
