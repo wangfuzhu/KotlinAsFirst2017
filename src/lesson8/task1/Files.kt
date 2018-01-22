@@ -1,7 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson8.task1
 
+import lesson1.task1.numberRevert
 import java.io.File
+import java.util.regex.Pattern
 
 /**
  * Пример
@@ -43,7 +45,6 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
     }
     outputStream.close()
 }
-
 /**
  * Средняя
  *
@@ -53,7 +54,20 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    val read = File(inputName).readLines()
+    for (str in substrings) {
+        val strLower = str.toLowerCase()
+        var sum = 0
+        for (i in read) {
+                if (strLower ==i.toLowerCase()) sum++
+            }
+            result.put(str, sum)
+    }
+    return result
+}
 
 
 /**
@@ -73,7 +87,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val writer = File(outputName).bufferedWriter()
     for (line in File(inputName).readLines()){
         var result = ""
-        for(letter in 0..line.length-1){
+        for(letter in 0 until line.length){
             if(letter - 1 >= 0 && line[letter-1] in "ЖжЧчШшЩщ" && line[letter] in "ЫыЯяЮю"){
                 result += when(line[letter]){
                     'Ы' -> "И"
@@ -111,6 +125,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  */
 fun centerFile(inputName: String, outputName: String) {
     TODO()
+
 }
 
 /**
@@ -214,10 +229,33 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
-fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+fun sameLetter(line: String):Int{
+    var number = line.length
+    for (i in 0 until line.length){
+        for (k in i+1 until line.length){
+            if (line[i] == line[k])
+                number -= 1
+        }
+    }
+    return number
 }
-
+fun chooseLongestChaoticWord(inputName: String, outputName: String) {
+    val writer = File(outputName).bufferedWriter()
+    val read = File(inputName).readLines()
+    var result = ""
+    var maxStr = 0
+    for(line in read){
+        if(line.length > maxStr && sameLetter(line.toLowerCase()) == line.length){
+            result = line
+            maxStr = line.length
+        }
+        else if(line.length == maxStr && sameLetter(line.toLowerCase()) == line.length){
+            result = result +", $line"
+        }
+    }
+    writer.write(result)
+    writer.close()
+}
 /**
  * Сложная
  *
