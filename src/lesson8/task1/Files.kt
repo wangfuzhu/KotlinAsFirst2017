@@ -57,14 +57,18 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
 
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
-    val read = File(inputName).readLines()
+    val read = File(inputName).readText().toLowerCase()
     for (str in substrings) {
         val strLower = str.toLowerCase()
         var sum = 0
-        for (i in read) {
-                if (strLower ==i.toLowerCase()) sum++
+        if (strLower in read) {
+            var index = read.indexOf(strLower)
+            while (index != -1) {
+                ++sum
+                index = read.indexOf(strLower, ++index)
             }
-            result.put(str, sum)
+        }
+        result.put(str, sum)
     }
     return result
 }
@@ -173,7 +177,9 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    TODO()
+}
 
 /**
  * Средняя
